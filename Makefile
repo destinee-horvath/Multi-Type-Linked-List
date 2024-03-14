@@ -14,6 +14,7 @@ $(TARGET): $(OBJS)
 tests: $(TARGET)
 	echo "Make my tests!"
 
+.PHONY:
 run_tests: tests
 	echo "Run my tests!"
 
