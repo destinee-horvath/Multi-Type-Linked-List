@@ -1,0 +1,28 @@
+PART A: 
+
+    test1 : various different inputs 
+    test2 : input with empty line   - two spaces 
+    test3 : list size 0 
+    test4 : input with whitespaces (3)  - three spaces 
+    test5 : creating multiple lists, removing one then viewing all 
+
+    error1 : tests command with no arguments 
+    error2 : many list to remove doesnt exist 
+    error3 : invalid arguments
+    error4 : lowercase command 
+    error5 : invalid command
+    error6 : curly brackets
+
+    - have case punctuation (special character)
+
+PART B: 
+
+    test1 : inserting an element 
+    test2 : insert negative index and index out of range 
+    test3 : deleting elements
+    test4 : delete negative index and index out of range 
+
+PART C: 
+    test1 : valid inputs 
+    test2 : inserting lists 
+    

@@ -1,0 +1,9 @@
+NEW 4
+up 
+down
+front
+back
+NEW 2
+left
+right
+INSERT 0 3 {1}

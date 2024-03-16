@@ -1,0 +1,9 @@
+NEW 3
+cows
+chickens 
+4
+rabbits
+fish
+DELETE 0 2
+DELETE 0 -3
+DELETE 0 20

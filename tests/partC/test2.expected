@@ -1,0 +1,3 @@
+List 0: up -> down -> front -> back
+List 1: left -> right
+Nested 0: up -> down -> {List 0} -> front -> back
