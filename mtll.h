@@ -1,12 +1,34 @@
 #ifndef MTLL_H
 #define MTLL_H
 
-struct mtll {
-    // Define your struct here
+#include <stddef.h>
+
+enum DataType {
+    INT,
+    FLOAT,
+    STRING,      //nest considered string 
+    CHAR
+    // NEST 
 };
 
-// A few suggested function prototypes:
-// Feel free to change or improve these as you need.
+enum ListType {
+    LIST, 
+    NESTED  
+};
+
+//node info
+struct Node {
+    void *data;            //store data (of any datatype)
+    enum DataType type;    //store type of data 
+    struct Node *next;   
+}; 
+
+//list info 
+struct mtll {
+    struct Node *head; 
+    enum ListType type;  //type of list (list or nested)
+    size_t id;           //give list a unique id 
+};
 
 extern struct mtll *mtll_create();
 
