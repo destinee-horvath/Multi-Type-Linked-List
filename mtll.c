@@ -90,9 +90,9 @@ struct mtll *mtll_create() {
  *      - struct mtll * : head
  *      - size_t        : size 
 */
-void make_list(struct mtll *head, size_t size) {
+void make_list(struct mtll *node_head, size_t size) {
     char input[MAX_INPUT];
-    struct Node *current = head->head;
+    struct Node *current = node_head->head;
 
     size_t i = 0;
     while (i < size) {
@@ -107,9 +107,10 @@ void make_list(struct mtll *head, size_t size) {
         
         new_node->type = checkType(input);            
         new_node->next = NULL;
-        new_node->data = convertData(input, new_node->type);
+        new_node->data = convertData(input, new_node->type);        
         
         if (current == NULL) { //first node
+            node_head->head = new_node;
             current = new_node;
         } 
 
@@ -189,20 +190,17 @@ void mtll_view(struct mtll *node) {
 /**
  * Prints a list of all linked lists 
  * Parameters:
- *      struct mtll ** : lists            //pointer to all lists 
+ *      struct mtll ** : lists            //pointer to heads of all lists 
  *      size_t         : num_lists
 */
 void mtll_view_all(struct mtll **lists, size_t num_lists) {
     printf("Number of lists: %zu\n", num_lists);
 
     if (lists != NULL) {
-        // struct mtll current_list = (*lists)->head;
-
         for (size_t i = 0; i < num_lists; i++) {
             if (lists[i] != NULL) {
-                printf("List %zu: %zu\n", i, lists[i]->id);
+                printf("List %zu\n", lists[i]->id);
             }
-            printf("oh no\n"); 
         }
     }
 
@@ -211,6 +209,9 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
     //mtll ONLY points to one list 
     //so need a way to store addresses of heads of lists
 }
+
+    
+
 
 
 /**

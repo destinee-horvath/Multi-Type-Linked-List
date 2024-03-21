@@ -61,9 +61,9 @@ int main(int argc, char** argv) {
     // struct Node *current = (struct Node *)malloc(sizeof(struct Node));
 
 
-    int index_lists = 0;
+    size_t index_lists = 0;
     // int index_nested = 0;
-    int size = 0;
+    size_t size = 0;
 
     while (fgets(input, sizeof(input), stdin) != NULL) {
         
@@ -100,16 +100,19 @@ int main(int argc, char** argv) {
                 current_head = current_head->next;
             }
             
-            struct mtll *head = mtll_create();        //make new head 
-            head->id = index_lists;                   //assign unique id 
-            current_head->next = head;                //link head to list of heads
-            index_lists++;                            //increment id 
-            make_list(head, atoi(arguments));
+            struct mtll **tmp = realloc(all_lists, (index_lists+1) * sizeof(struct mtll *));
+            all_lists = tmp;
+
+            all_lists[index_lists] = mtll_create();        //make new head 
+            all_lists[index_lists]->id = index_lists;      //assign unique id 
+            make_list(all_lists[index_lists], atoi(arguments));
+
+            index_lists++;                                 //increment id 
             
             size++;
 
         }
-        
+
         else if (strncmp(input, "VIEW ALL", 8) == 0 || strncmp(input, "VIEW ALL ", 9) == 0) { 
             arguments = strtok(input + 8, "\n");  
 
@@ -119,7 +122,9 @@ int main(int argc, char** argv) {
             } 
 
             mtll_view_all(all_lists, size);
+
         }
+
         else if (strncmp(input, "VIEW ", 5) == 0) { 
             if (input[5] == ' ' || input[5] == '\n' || input[5] == '\0') {
                 printInvalidCommand("VIEW");
@@ -189,7 +194,7 @@ int main(int argc, char** argv) {
 
     //check brackets (if pair on same line with valid number between then valid, else invalid )
     
-    for (int i = 0; i < size; i++) {
+    for (size_t i = 0; i < size; i++) {
         mtll_free(all_lists[i]); //free all lists before code ends
     }
     
