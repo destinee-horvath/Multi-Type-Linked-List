@@ -3,42 +3,6 @@
 #include <stdlib.h>
 #include "mtll.h"
 
-#define MAX_INPUT 128
-
-/**
- * - Checks the type of data being entered into the linked list 
- * Parameters: 
- *      - char * : input
- * Returns: 
- *      - 0 if string
- *      - 1 if integer
- *      - 2 if float
- *      - 3 if character 
-*/
-int checkType(char *input) {
-    char *endptr;
-
-    //integer
-    strtol(input, &endptr, 10);
-    if (*endptr == '\0') {
-        return 1; 
-    }
-
-    //float 
-    endptr = NULL;
-    strtof(input, &endptr);
-    if (*endptr == '\0') {
-        return 2; // Float
-    }
-
-    //character 
-    if (strlen(input) == 1) {
-        return 3; 
-    }
-
-    //string
-    return 0; 
-}
 
 /**
  * - Checks arguments of the command (if valid datatypes in correct order)
@@ -53,7 +17,8 @@ int checkType(char *input) {
 int checkArguments(char *command, char *argument, int num_args) {
     if (num_args == 1) { //NEW, VIEW, TYPE, REMOVE : expects integer argument
         char *endptr;
-        long convert = strtol(argument, &endptr, 10);
+        strtol(argument, &endptr, 10);
+
         if (*endptr == '\0') {
             return 0;
         }
@@ -76,103 +41,159 @@ int checkArguments(char *command, char *argument, int num_args) {
 }
 
 /**
+ * - print message
+ * Parameters: 
+ *      - char * : command 
+*/
+void printInvalidCommand(char *command) {
+    printf("INVALID COMMAND: %s\n", command);
+    return;
+}
+
+/**
  * - Checks commands and inputs 
 */
 int main(int argc, char** argv) {
     char input[MAX_INPUT];
     char *arguments;
     
+    struct mtll **all_lists = (struct mtll **)malloc(1 * sizeof(struct mtll *)); //store mtll lists
+    // struct Node *current = (struct Node *)malloc(sizeof(struct Node));
+
+
+    int index_lists = 0;
+    // int index_nested = 0;
+    int size = 0;
+
     while (fgets(input, sizeof(input), stdin) != NULL) {
         
         if (strncmp(input, "NEW ", 4) == 0) { 
             if (input[4] == ' ' || input[4] == '\n' || input[4] == '\0') {   //checks if there is something after whitespace to prevent core dump
-                printf("INVALID COMMAND: NEW\n");
+                printInvalidCommand("NEW");
                 continue;
             }
 
             arguments = strtok(input + 4, "\n");  
 
-            if (checkArguments(input + 4, arguments, 1) != 0 || arguments == NULL) {
-                printf("INVALID COMMAND: NEW\n");
+            if (checkArguments(input + 4, arguments, 1) != 0 || 
+                    arguments == NULL || checkType(arguments) != 0) {
+                printInvalidCommand("NEW");
                 continue;
             } 
+
+            if (arguments <= 0) {
+                printInvalidCommand("NEW");
+                continue;
+            }
+
+            //ADD SOME LOGIC TO DETERMINE 
+            //IF NESTED 
+
+            //IF LIST 
+            if (*all_lists == NULL) { //if first node
+                *all_lists = mtll_create();
+            } 
+
+            struct mtll *current_head = *all_lists;
+
+            while (current_head->next != NULL) {            //traverse to end of list of heads
+                current_head = current_head->next;
+            }
+            
+            struct mtll *head = mtll_create();        //make new head 
+            head->id = index_lists;                   //assign unique id 
+            current_head->next = head;                //link head to list of heads
+            index_lists++;                            //increment id 
+            make_list(head, atoi(arguments));
+            
+            size++;
+
         }
+        
         else if (strncmp(input, "VIEW ALL", 8) == 0 || strncmp(input, "VIEW ALL ", 9) == 0) { 
             arguments = strtok(input + 8, "\n");  
 
             if (arguments != NULL) {
-                printf("INVALID COMMAND: VIEW ALL\n");
+                printInvalidCommand("VIEW ALL");
                 continue;
             } 
+
+            mtll_view_all(all_lists, size);
         }
         else if (strncmp(input, "VIEW ", 5) == 0) { 
             if (input[5] == ' ' || input[5] == '\n' || input[5] == '\0') {
-                printf("INVALID COMMAND: VIEW\n");
+                printInvalidCommand("VIEW");
                 continue;
             }
             arguments = strtok(input + 5, "\n");  
 
             if (checkArguments(input + 5, arguments, 1) != 0 || 
                                  arguments == NULL || input[6] == ' ') {
-                printf("INVALID COMMAND: VIEW\n");
+                printInvalidCommand("VIEW");
                 continue;
             } 
         }
         else if (strncmp(input, "TYPE ", 5) == 0) { 
             if (input[5] == ' ' || input[5] == '\n' || input[5] == '\0') {
-                printf("INVALID COMMAND: TYPE\n");
+                printInvalidCommand("TYPE");
                 continue;
             }
             arguments = strtok(input + 5, "\n");  
 
             if (checkArguments(input + 5, arguments, 1) != 0 || arguments == NULL) {
-                printf("INVALID COMMAND: TYPE\n");
+                printInvalidCommand("TYPE");
                 continue;
             } 
 
         }
         else if (strncmp(input, "REMOVE ", 7) == 0) { 
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
-                printf("INVALID COMMAND: REMOVE\n");
+                printInvalidCommand("REMOVE");
                 continue;
             }
             arguments = strtok(input + 7, "\n");  
 
             if (checkArguments(input + 7, arguments, 1) != 0 || arguments == NULL) {
-                printf("INVALID COMMAND: REMOVE\n");
+                printInvalidCommand("REMOVE");
                 continue;
             } 
         }
         else if (strncmp(input, "INSERT ", 7) == 0) {
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
-                printf("INVALID COMMAND: INSERT\n");
+                printInvalidCommand("INSERT");
                 continue;
             }
             arguments = strtok(input + 7, "\n");  
 
             if (checkArguments(input + 7, arguments, 3) != 0 || arguments == NULL) {
-                printf("INVALID COMMAND: INSERT\n");
+                printInvalidCommand("INSERT");
                 continue;
             } 
         }   
         else if (strncmp(input, "DELETE ", 7) == 0) {
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
-                printf("INVALID COMMAND: DELETE\n");
+                printInvalidCommand("DELETE");
                 continue;
             }
             arguments = strtok(input + 7, "\n");  
 
             if (checkArguments(input + 7, arguments, 3) != 0 || arguments == NULL) {
-                printf("INVALID COMMAND: DELETE\n");
+                printInvalidCommand("DELETE");
                 continue;
             } 
         }
         else { //includes commands like NEW1 (missing whitespace)
-            printf("INVALID COMMAND: INPUT\n");
+            printInvalidCommand("INPUT");
         }
     }
 
     //check brackets (if pair on same line with valid number between then valid, else invalid )
+    
+    for (int i = 0; i < size; i++) {
+        mtll_free(all_lists[i]); //free all lists before code ends
+    }
+    
+    free(all_lists);
     return 0;
 }
 
@@ -180,3 +201,15 @@ int main(int argc, char** argv) {
 //strncmp(string1, string2, bytes to compare);
 //strtok(string to token/when to start token, when to end token)
 //strtol(string to convert, endpointer, base (e.g. base 10))
+
+
+/**
+ * Linking Concept: 
+ *      O -> O -> O
+ *      |
+ *      V
+ *      O -> O
+ *      |
+ *      V
+ *      O -> O -> O -> O
+*/

@@ -1,7 +1,69 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mtll.h"
 
+/**
+ * - Converts user input to correct datatype 
+ * Parameters: 
+ *      - char * : input
+ *      - enum : datatype
+ * Returns: 
+ *      - void * : converted
+*/
+void *convertData(char *input, enum DataType datatype) {
+    void *converted = NULL; 
+
+    switch(datatype) {
+        case INT:
+            converted = malloc(sizeof(int));
+            *((int *)converted) = atoi(input);
+            return converted;
+
+        case FLOAT: 
+            converted = malloc(sizeof(float));
+            *((float *)converted) = atof(input);
+            return converted;
+        
+        case CHAR: 
+            converted = malloc(sizeof(char));
+            *((char *)converted) = input[0]; 
+            return converted;
+        
+        //anything else is considered string 
+        default: 
+            converted = strdup(input);  //prevent changing original string
+            return converted;
+    }
+
+}
+
+/**
+ * - Checks the type of data being entered into the linked list 
+ * Parameters: 
+ *      - char * : input
+ * Returns: 
+ *      - enum Datatype
+*/
+enum DataType checkType(char *input) {
+    char *endptr;
+
+    strtol(input, &endptr, 10);
+    if (*endptr == '\0') {
+        return INT; 
+    }
+
+    strtof(input, &endptr);
+    if (*endptr == '\0') {
+        return FLOAT; 
+    }
+
+    if (strlen(input) == 1) {
+        return CHAR; 
+    }
+
+    return STRING; 
+}
 
 /**
  * Creates a new linked list 
@@ -16,11 +78,49 @@ struct mtll *mtll_create() {
     }
 
     head->head = NULL;
+    head->next = NULL;
     head->type = STRING;
-    // head->id = 0;
+    head->id = -1;
     return head;
 }
 
+/**
+ * Creates linked list based on used inputs
+ * Parameters: 
+ *      - struct mtll * : head
+ *      - size_t        : size 
+*/
+void make_list(struct mtll *head, size_t size) {
+    char input[MAX_INPUT];
+    struct Node *current = head->head;
+
+    size_t i = 0;
+    while (i < size) {
+        if (fgets(input, sizeof(input), stdin) == NULL) { //user didn't enter anything
+            strcpy(input, " ");  
+        }
+
+        //have case for nested list here 
+        
+        //create new node and store infos
+        struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
+        
+        new_node->type = checkType(input);            
+        new_node->next = NULL;
+        new_node->data = convertData(input, new_node->type);
+        
+        if (current == NULL) { //first node
+            current = new_node;
+        } 
+
+        else {
+            current->next = new_node;
+            current = new_node;
+        }
+        
+        i++;
+    }
+}
 
 /**
  * Frees allocated memory for linked list
@@ -95,10 +195,21 @@ void mtll_view(struct mtll *node) {
 void mtll_view_all(struct mtll **lists, size_t num_lists) {
     printf("Number of lists: %zu\n", num_lists);
 
-    for (size_t i = 0; i < num_lists; i++) {
-        printf("List %ld: ", lists[i]->id);
-        mtll_view(lists[i]);
+    if (lists != NULL) {
+        // struct mtll current_list = (*lists)->head;
+
+        for (size_t i = 0; i < num_lists; i++) {
+            if (lists[i] != NULL) {
+                printf("List %zu: %zu\n", i, lists[i]->id);
+            }
+            printf("oh no\n"); 
+        }
     }
+
+    //point to mtll head 
+    //iterate to end of list 
+    //mtll ONLY points to one list 
+    //so need a way to store addresses of heads of lists
 }
 
 
