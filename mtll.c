@@ -260,27 +260,32 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
  *      size_t         : num_lists
  *      struct mtll *  : to_remove    //list to remove 
 */
-void mtll_remove(struct mtll **lists, size_t num_lists, struct mtll *to_remove) {
+void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
     if (to_remove == NULL || *lists == NULL || lists == NULL) { 
         return;
     }
 
-    size_t i = 0;
-    while (i < num_lists && lists[i] != to_remove) {
-        
-        i++;
+    struct mtll *curr = *lists;
+    struct mtll *prev = NULL;
+
+    while (curr != NULL && curr != to_remove) {
+        prev = curr;
+        curr = curr->next;
     }
 
-    if (i == num_lists) { //list doesnt exist 
+    if (curr == NULL) {  //no node found 
         return;
-    }   
-
-    if (i > 0) {
-        lists[i - 1]->next = to_remove->next;
     }
+
+    if (prev != NULL) {  //link previous node to next node (skip curr)
+        prev->next = curr->next;
+    }
+    else {  //curr is head 
+        *lists = NULL;
+    }
+
+    printf("List %ld has been removed.\n", curr->id);
 
     mtll_free(to_remove);
-    num_lists--;
-    mtll_view_all(lists, num_lists);
 
 }

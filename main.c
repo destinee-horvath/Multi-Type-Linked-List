@@ -201,8 +201,10 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            mtll_remove(&all_lists, size, &all_lists[atoi(arguments)]);
+            mtll_remove(&all_lists, &all_lists[atoi(arguments)]);
+            printf("\n");
             size--;
+            mtll_view_all(&all_lists, size);
 
         }
 
