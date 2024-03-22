@@ -13,10 +13,20 @@ $(TARGET): $(OBJS)
 
 tests: $(TARGET)
 	echo "Make my tests!"
+	chmod u+x test.sh
+
+gdb:
+	$(CC) $(FLAGS) -o -g *.c
+	gdb ./*
+
+asan:
+	clang -fsanitize=address -g -o mtll main.c mtll.c
+	./mtll
 
 .PHONY:
 run_tests: tests
 	echo "Run my tests!"
+	./test.sh 
 
 .PHONY:
 clean:

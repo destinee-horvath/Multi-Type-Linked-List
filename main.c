@@ -57,12 +57,9 @@ int main(int argc, char** argv) {
     char input[MAX_INPUT];
     char *arguments;
     
-    struct mtll **all_lists = (struct mtll **)malloc(1 * sizeof(struct mtll *)); //store mtll lists
-    // struct Node *current = (struct Node *)malloc(sizeof(struct Node));
-
+    struct mtll *all_lists = NULL; //store mtll lists
 
     size_t index_lists = 0;
-    // int index_nested = 0;
     size_t size = 0;
 
     while (fgets(input, sizeof(input), stdin) != NULL) {
@@ -89,35 +86,25 @@ int main(int argc, char** argv) {
             //ADD SOME LOGIC TO DETERMINE 
             //IF NESTED 
 
-            //IF LIST 
-            if (*all_lists == NULL) { //if first node
-                *all_lists = mtll_create();
-            } 
+            struct mtll *new_node = mtll_create(); 
+            new_node->id = index_lists;
+            make_list(new_node, atoi(arguments));
+            mtll_view(new_node);
 
-            struct mtll *current_head = *all_lists;
-
-            while (current_head->next != NULL) {            //traverse to end of list of heads
-                current_head = current_head->next;
+            if (all_lists == NULL) {      //first node 
+                all_lists = new_node;    //make first node head of all_lists
             }
-            
-            struct mtll **tmp = realloc(all_lists, (index_lists+1) * sizeof(struct mtll *));
-            if (tmp == NULL) {
-                printf("memory realloc fail\n");
-                continue;
+            else { 
+                struct mtll *current_list = all_lists;
+
+                while (current_list->next != NULL) {          //traverse to end 
+                    current_list = current_list->next;
+                }
+                current_list->next = new_node;                //add new node
             }
-
-            all_lists = tmp; //set all lists to new size 
-
-            all_lists[index_lists] = mtll_create();        //make new head 
-            all_lists[index_lists]->id = index_lists;      //assign unique id 
-            make_list(all_lists[index_lists], atoi(arguments));
-
-            mtll_view(all_lists[index_lists]);
+                        
             index_lists++;                                 //increment id 
-            
-            size++;
-
-            
+            size++;                                        //increment size 
 
         }
 
@@ -129,7 +116,7 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            mtll_view_all(all_lists, size);
+            mtll_view_all(&all_lists, size);
 
         }
 
@@ -146,20 +133,20 @@ int main(int argc, char** argv) {
                 continue;
             }   
 
-            if (all_lists == NULL || *all_lists == NULL) {
+            if (all_lists == NULL) {
                 printf("all_list is null\n");
                 continue;
             }
 
-            struct mtll **tmp = all_lists;
+            struct mtll *tmp = all_lists;
             size_t count = 0;
 
-            while ((*tmp) != NULL) {    
-                if ((*tmp)->id == atoi(arguments)) {
-                    mtll_view((*tmp));
+            while (tmp != NULL) {    
+                if ((tmp)->id == atoi(arguments)) {
+                    mtll_view((tmp));
                     break;
                 }
-                *tmp = (*tmp)->next;
+                tmp = (tmp)->next;
                 count++;
             }
 
@@ -180,20 +167,20 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            if (all_lists == NULL || *all_lists == NULL) {
+            if (all_lists == NULL) {
                 printf("all_list is null\n");
                 continue;
             }
 
-            struct mtll **tmp = all_lists;
+            struct mtll *tmp = all_lists; 
             size_t count = 0;
 
-            while ((*tmp) != NULL) {    
-                if ((*tmp)->id == atoi(arguments)) {
-                    mtll_type((*tmp));
+            while (tmp != NULL) {    
+                if (tmp->id == atoi(arguments)) {
+                    mtll_view(tmp);
                     break;
                 }
-                *tmp = (*tmp)->next;
+                tmp = tmp->next;
                 count++;
             }
 
@@ -213,7 +200,12 @@ int main(int argc, char** argv) {
                 printInvalidCommand("REMOVE");
                 continue;
             } 
+
+            mtll_remove(&all_lists, size, &all_lists[atoi(arguments)]);
+            size--;
+
         }
+
         else if (strncmp(input, "INSERT ", 7) == 0) {
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
                 printInvalidCommand("INSERT");
@@ -246,10 +238,11 @@ int main(int argc, char** argv) {
     //check brackets (if pair on same line with valid number between then valid, else invalid )
     
     for (size_t i = 0; i < size; i++) {
-        mtll_free(all_lists[i]); //free all lists before code ends
+        mtll_free(&all_lists[i]); //free all lists before code ends
     }
     
     free(all_lists);
+
     return 0;
 }
 

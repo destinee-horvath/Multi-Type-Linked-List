@@ -79,7 +79,7 @@ struct mtll *mtll_create() {
 
     head->head = NULL;
     head->next = NULL;
-    head->type = STRING;
+    head->type = LIST;
     head->id = -1;
     return head;
 }
@@ -162,26 +162,26 @@ void mtll_view(struct mtll *node) {
         switch (current->type) {
 
             case INT:
-                printf("%d ", *((int *)current->data));
+                printf(" %d", *((int *)current->data));
                 break;
 
             case FLOAT:
-                printf("%.2f ", *((float *)current->data));
+                printf(" %.2f", *((float *)current->data));
                 break;
 
             case STRING:
-                printf("%s ", (char *)current->data);
+                printf(" %s", (char *)current->data);
                 break;
 
             case CHAR:
-                printf("%c ", *((char *)current->data));
+                printf(" %c", *((char *)current->data));
                 break;
         
         }
 
         current = current->next;
         if (current != NULL) {
-            printf("-> ");
+            printf(" ->");
         }
     }
 
@@ -234,12 +234,15 @@ void mtll_type(struct mtll *node) {
 void mtll_view_all(struct mtll **lists, size_t num_lists) {
     printf("Number of lists: %zu\n", num_lists);
 
-    if (lists != NULL) {
-        for (size_t i = 0; i < num_lists; i++) {
-            if (lists[i] != NULL) {
-                printf("List %zu\n", lists[i]->id);
-            }
-        }
+    struct mtll **tmp = lists;
+
+    if (num_lists == 0 || lists == NULL) {
+        return;
+    }
+
+    while ((*tmp) != NULL) {    
+        printf("List %ld\n", (*tmp)->id);
+        tmp = &((*tmp)->next);                 //point to the next pointer
     }
 
     //point to mtll head 
@@ -258,17 +261,22 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
  *      struct mtll *  : to_remove    //list to remove 
 */
 void mtll_remove(struct mtll **lists, size_t num_lists, struct mtll *to_remove) {
-    if (to_remove == NULL) { 
+    if (to_remove == NULL || *lists == NULL || lists == NULL) { 
         return;
     }
 
     size_t i = 0;
     while (i < num_lists && lists[i] != to_remove) {
+        
         i++;
     }
 
     if (i == num_lists) { //list doesnt exist 
         return;
+    }   
+
+    if (i > 0) {
+        lists[i - 1]->next = to_remove->next;
     }
 
     mtll_free(to_remove);
