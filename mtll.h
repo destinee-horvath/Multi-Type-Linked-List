@@ -52,7 +52,7 @@ extern void mtll_type(struct mtll *);
 
 extern void mtll_view_all(struct mtll **, size_t);
 
-extern void mtll_remove(struct mtll **, size_t, struct mtll *);
+extern void mtll_remove(struct mtll **, struct mtll *);
 
 // You will likely need other functions for Parts 2 and 3,
 // And for general input / output management
