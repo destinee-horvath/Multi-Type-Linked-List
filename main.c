@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
             mtll_view(new_node);
 
             if (all_lists == NULL) {      //first node 
-                all_lists = new_node;    //make first node head of all_lists
+                all_lists = new_node;     //make first node head of all_lists
             }
             else { 
                 struct mtll *current_list = all_lists;
@@ -105,7 +105,6 @@ int main(int argc, char** argv) {
                         
             index_lists++;                                 //increment id 
             size++;                                        //increment size 
-
         }
 
         else if (strncmp(input, "VIEW ALL", 8) == 0 || strncmp(input, "VIEW ALL ", 9) == 0) { 
@@ -134,7 +133,7 @@ int main(int argc, char** argv) {
             }   
 
             if (all_lists == NULL) {
-                printf("all_list is null\n");
+                printInvalidCommand("VIEW");
                 continue;
             }
 
@@ -201,11 +200,23 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            mtll_remove(&all_lists, &all_lists[atoi(arguments)]);
-            printf("\n");
-            size--;
-            mtll_view_all(&all_lists, size);
+            size_t list_id = atoi(arguments);
+            struct mtll *to_remove = all_lists;
 
+            while (to_remove != NULL && to_remove->id != list_id) {
+                to_remove = to_remove->next;
+            }
+
+            if (to_remove != NULL) {
+                mtll_remove(&all_lists, to_remove);
+                printf("\n");
+                size--;
+                mtll_view_all(&all_lists, size);
+                continue;
+            }
+            else {
+                printInvalidCommand("REMOVE");
+            }
         }
 
         else if (strncmp(input, "INSERT ", 7) == 0) {
@@ -239,11 +250,14 @@ int main(int argc, char** argv) {
 
     //check brackets (if pair on same line with valid number between then valid, else invalid )
     
-    for (size_t i = 0; i < size; i++) {
-        mtll_free(&all_lists[i]); //free all lists before code ends
+    struct mtll *curr_list = all_lists;
+    while (curr_list != NULL) {
+        struct mtll *next_list = curr_list->next;
+        mtll_free(curr_list); 
+        curr_list = next_list; 
     }
-    
-    free(all_lists);
+
+    // free(all_lists);
 
     return 0;
 }

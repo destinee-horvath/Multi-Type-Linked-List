@@ -131,16 +131,20 @@ void make_list(struct mtll *node_head, size_t size) {
  *      struct mtll * : head
 */
 void mtll_free(struct mtll *head) {
-    struct Node *current = head->head;
-
-    while (current != NULL) {
-        struct Node *tmp = current;
-        current = current->next;
-        free(tmp->data);
-        free(tmp);
+    if (head == NULL) {
+        return; 
     }
 
-    free(head);
+    struct Node *node_curr = head->head;
+
+    while (node_curr != NULL) {
+        struct Node *node_tmp = node_curr;
+        node_curr = node_curr->next;
+        free(node_tmp->data);
+        free(node_tmp);
+    }
+
+    free(head); 
 }
 
 
@@ -156,32 +160,32 @@ void mtll_view(struct mtll *node) {
 
     struct Node *current = node->head;
 
-    printf("List %ld: ", node->id);
+    // printf("List %ld:", node->id);
 
     while (current != NULL) {
         switch (current->type) {
 
             case INT:
-                printf(" %d", *((int *)current->data));
+                printf("%d", *((int *)current->data));
                 break;
 
             case FLOAT:
-                printf(" %.2f", *((float *)current->data));
+                printf("%.2f", *((float *)current->data));
                 break;
 
             case STRING:
-                printf(" %s", (char *)current->data);
+                printf("%s", (char *)current->data);
                 break;
 
             case CHAR:
-                printf(" %c", *((char *)current->data));
+                printf("%c", *((char *)current->data));
                 break;
-        
+            printf(" ");
         }
 
         current = current->next;
         if (current != NULL) {
-            printf(" ->");
+            printf(" -> ");
         }
     }
 
@@ -281,7 +285,7 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
         prev->next = curr->next;
     }
     else {  //curr is head 
-        *lists = NULL;
+        *lists = curr->next;
     }
 
     printf("List %ld has been removed.\n", curr->id);
