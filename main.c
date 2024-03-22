@@ -89,6 +89,7 @@ int main(int argc, char** argv) {
             struct mtll *new_node = mtll_create(); 
             new_node->id = index_lists;
             make_list(new_node, atoi(arguments));
+            printf("List %ld: ", new_node->id);
             mtll_view(new_node);
 
             if (all_lists == NULL) {      //first node 
@@ -150,7 +151,7 @@ int main(int argc, char** argv) {
             }
 
             if (count == size) {
-                printf("List doesn't exist\n");
+                printInvalidCommand("VIEW");
             }
         }
 

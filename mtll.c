@@ -160,7 +160,7 @@ void mtll_view(struct mtll *node) {
 
     struct Node *current = node->head;
 
-    // printf("List %ld:", node->id);
+    // printf("List %ld: ", node->id);
 
     while (current != NULL) {
         switch (current->type) {
