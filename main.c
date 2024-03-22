@@ -112,11 +112,12 @@ int main(int argc, char** argv) {
             all_lists[index_lists]->id = index_lists;      //assign unique id 
             make_list(all_lists[index_lists], atoi(arguments));
 
+            mtll_view(all_lists[index_lists]);
             index_lists++;                                 //increment id 
             
             size++;
 
-            mtll_view(all_lists[index_lists]);
+            
 
         }
 
