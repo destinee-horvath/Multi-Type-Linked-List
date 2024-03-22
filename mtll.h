@@ -48,6 +48,8 @@ extern void mtll_free(struct mtll *);
 
 extern void mtll_view(struct mtll *);
 
+extern void mtll_type(struct mtll *);
+
 extern void mtll_view_all(struct mtll **, size_t);
 
 extern void mtll_remove(struct mtll **, size_t, struct mtll *);

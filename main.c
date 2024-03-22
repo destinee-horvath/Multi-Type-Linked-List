@@ -116,6 +116,8 @@ int main(int argc, char** argv) {
             
             size++;
 
+            mtll_view(all_lists[index_lists]);
+
         }
 
         else if (strncmp(input, "VIEW ALL", 8) == 0 || strncmp(input, "VIEW ALL ", 9) == 0) { 
@@ -177,7 +179,28 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
+            if (all_lists == NULL || *all_lists == NULL) {
+                printf("all_list is null\n");
+                continue;
+            }
+
+            struct mtll **tmp = all_lists;
+            size_t count = 0;
+
+            while ((*tmp) != NULL) {    
+                if ((*tmp)->id == atoi(arguments)) {
+                    mtll_type((*tmp));
+                    break;
+                }
+                *tmp = (*tmp)->next;
+                count++;
+            }
+
+            if (count == size) {
+                printf("List doesn't exist\n");
+            }
         }
+        
         else if (strncmp(input, "REMOVE ", 7) == 0) { 
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
                 printInvalidCommand("REMOVE");

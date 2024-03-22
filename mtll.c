@@ -186,7 +186,43 @@ void mtll_view(struct mtll *node) {
     }
 
     printf("\n");
+}
 
+void mtll_type(struct mtll *node) {
+    if (node == NULL) {
+        return;
+    }
+
+    struct Node *current = node->head;
+
+    while (current != NULL) {
+        switch (current->type) {
+
+            case INT:
+                printf("int ");
+                break;
+
+            case FLOAT:
+                printf("float ");
+                break;
+
+            case STRING:
+                printf("string ");
+                break;
+
+            case CHAR:
+                printf("char ");
+                break;
+        
+        }
+
+        current = current->next;
+        if (current != NULL) {
+            printf("-> ");
+        }
+    }
+
+    printf("\n");
 }
 
 /**
@@ -211,8 +247,6 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
     //mtll ONLY points to one list 
     //so need a way to store addresses of heads of lists
 }
-
-    
 
 
 
