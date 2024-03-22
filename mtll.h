@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 
+#define MAX_INPUT 128
+
 enum DataType {
     INT,
     FLOAT,
@@ -26,11 +28,21 @@ struct Node {
 //list info 
 struct mtll {
     struct Node *head; 
+    struct mtll *next;
     enum ListType type;  //type of list (list or nested)
     size_t id;           //give list a unique id 
 };
 
+
+//helper functions 
+extern void *convertData(char *, enum DataType);
+
+enum DataType checkType(char *); 
+
+//Logic functions 
 extern struct mtll *mtll_create();
+
+extern void make_list(struct mtll *, size_t); 
 
 extern void mtll_free(struct mtll *);
 
