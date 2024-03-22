@@ -101,7 +101,12 @@ int main(int argc, char** argv) {
             }
             
             struct mtll **tmp = realloc(all_lists, (index_lists+1) * sizeof(struct mtll *));
-            all_lists = tmp;
+            if (tmp == NULL) {
+                printf("memory realloc fail\n");
+                continue;
+            }
+
+            all_lists = tmp; //set all lists to new size 
 
             all_lists[index_lists] = mtll_create();        //make new head 
             all_lists[index_lists]->id = index_lists;      //assign unique id 
@@ -136,8 +141,30 @@ int main(int argc, char** argv) {
                                  arguments == NULL || input[6] == ' ') {
                 printInvalidCommand("VIEW");
                 continue;
-            } 
+            }   
+
+            if (all_lists == NULL || *all_lists == NULL) {
+                printf("all_list is null\n");
+                continue;
+            }
+
+            struct mtll **tmp = all_lists;
+            size_t count = 0;
+
+            while ((*tmp) != NULL) {    
+                if ((*tmp)->id == atoi(arguments)) {
+                    mtll_view((*tmp));
+                    break;
+                }
+                *tmp = (*tmp)->next;
+                count++;
+            }
+
+            if (count == size) {
+                printf("List doesn't exist\n");
+            }
         }
+
         else if (strncmp(input, "TYPE ", 5) == 0) { 
             if (input[5] == ' ' || input[5] == '\n' || input[5] == '\0') {
                 printInvalidCommand("TYPE");

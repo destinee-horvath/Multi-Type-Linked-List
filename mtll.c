@@ -99,7 +99,9 @@ void make_list(struct mtll *node_head, size_t size) {
         if (fgets(input, sizeof(input), stdin) == NULL) { //user didn't enter anything
             strcpy(input, " ");  
         }
-
+        
+        input[strcspn(input, "\n")] = '\0'; //to remove newline character if it exists
+        
         //have case for nested list here 
         
         //create new node and store infos
@@ -154,37 +156,37 @@ void mtll_view(struct mtll *node) {
 
     struct Node *current = node->head;
 
-    while (current->next != NULL) {
+    printf("List %ld: ", node->id);
+
+    while (current != NULL) {
         switch (current->type) {
 
-        case INT:
-            printf("%d ", *((int *)current->data));
-            break;
+            case INT:
+                printf("%d ", *((int *)current->data));
+                break;
 
-        case FLOAT:
-            printf("%.2f ", *((float *)current->data));
-            break;
+            case FLOAT:
+                printf("%.2f ", *((float *)current->data));
+                break;
 
-        case STRING:
-            printf("%s ", (char *)current->data);
-            break;
+            case STRING:
+                printf("%s ", (char *)current->data);
+                break;
 
-        case CHAR:
-            printf("%c ", *((char *)current->data));
-            break;
-
-        // case NEST: 
-        //     printf("%s ", *((char *)current->data))
-        //     break;
-        // }
+            case CHAR:
+                printf("%c ", *((char *)current->data));
+                break;
+        
+        }
 
         current = current->next;
         if (current != NULL) {
-            printf("->");
+            printf("-> ");
         }
     }
+
     printf("\n");
-    }
+
 }
 
 /**
