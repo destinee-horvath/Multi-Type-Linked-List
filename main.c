@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
             } 
 
             if (all_lists == NULL) {
-                printf("all_list is null\n");
+                printInvalidCommand("TYPE");
                 continue;
             }
 
@@ -177,7 +177,7 @@ int main(int argc, char** argv) {
 
             while (tmp != NULL) {    
                 if (tmp->id == atoi(arguments)) {
-                    mtll_view(tmp);
+                    mtll_type(tmp);
                     break;
                 }
                 tmp = tmp->next;
