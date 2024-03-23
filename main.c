@@ -266,6 +266,8 @@ int main(int argc, char** argv) {
                 printInvalidCommand("DELETE");
                 continue;
             } 
+
+            // mtll_delete();
         }
 
         else if (strcmp(input, "\n") == 0) { //input blank 
