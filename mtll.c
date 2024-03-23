@@ -105,6 +105,11 @@ void make_list(struct mtll *node_head, size_t size) {
             enter_blank = 1;
         }
         
+        if (strcmp(input, "\n") == 0) {
+            strcpy(input, " ");
+            enter_blank = 1;
+        }
+        
         input[strcspn(input, "\n")] = '\0'; //to remove newline character if it exists
 
         if (strlen(input) >= MAX_INPUT) {
