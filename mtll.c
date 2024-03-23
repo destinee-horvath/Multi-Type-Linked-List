@@ -18,24 +18,27 @@ void *convertData(char *input, enum DataType datatype) {
         case INT:
             converted = malloc(sizeof(int));
             *((int *)converted) = atoi(input);
-            return converted;
+            break;
 
         case FLOAT: 
             converted = malloc(sizeof(float));
             *((float *)converted) = atof(input);
-            return converted;
+            break;
         
         case CHAR: 
             converted = malloc(sizeof(char));
             *((char *)converted) = input[0]; 
-            return converted;
+            break;
         
         //anything else is considered string 
         default: 
             converted = strdup(input);  //prevent changing original string
-            return converted;
+            break;
     }
 
+    return converted;
+
+    //note freed when free(node->data)
 }
 
 /**
@@ -101,6 +104,14 @@ void make_list(struct mtll *node_head, size_t size) {
         }
         
         input[strcspn(input, "\n")] = '\0'; //to remove newline character if it exists
+
+        if (strlen(input) >= MAX_INPUT) {
+            input[MAX_INPUT - 1] = '\n';
+
+            //need to clear buffer to prevent exceeding characters from being read again 
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF);
+        }
         
         //have case for nested list here 
         
