@@ -61,7 +61,7 @@ enum DataType checkType(char *input) {
         return FLOAT; 
     }
 
-    if (strlen(input) == 1 && strcmp(input, " ") != 0) { //single whitespace is string 
+    if (strlen(input) == 1 && strcmp(input, "\t") != 0 ) { //&& strcmp(input, " ") != 0 single whitespace is string 
         return CHAR; 
     }
 

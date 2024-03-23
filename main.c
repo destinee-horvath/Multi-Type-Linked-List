@@ -244,8 +244,12 @@ int main(int argc, char** argv) {
                 continue;
             } 
         }
+
+        else if (strcmp(input, "\n") == 0) { //input blank 
+            continue;
+        }
+
         else { //includes commands like NEW1 (missing whitespace)
-            printf("INPUT: %s\n", input);
             printInvalidCommand("INPUT");
         }
     }
