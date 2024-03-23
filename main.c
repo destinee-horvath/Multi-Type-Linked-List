@@ -23,12 +23,12 @@ int checkArguments(char *command, char *argument, int num_args) {
             return 0;
         }
     }
-    else if (num_args == 3) { //INSERT, DELETE : expects at least 2 integer arguments 
+    else if (num_args == 3) { //INSERT, DELETE : expects at least 1 integer arguments 
         char *arg1 = strtok(argument, " ");
         char *arg2 = strtok(NULL, " ");
-        char *arg3 = strtok(NULL, " ");
+        // char *arg3 = strtok(NULL, " ");
 
-        if (arg1 == NULL || arg2 == NULL || arg3 == NULL) { //no arguments
+        if (arg1 == NULL || arg2 == NULL) { //no arguments
             return 1;
         }
 
@@ -37,7 +37,7 @@ int checkArguments(char *command, char *argument, int num_args) {
         }
     }
 
-    return 1;
+    return 0;
 }
 
 /**
@@ -227,10 +227,33 @@ int main(int argc, char** argv) {
             }
             arguments = strtok(input + 7, "\n");  
 
-            if (checkArguments(input + 7, arguments, 3) != 0 || arguments == NULL) {
+            char *input_list = strtok(arguments, " ");
+            char *input_pos = strtok(NULL, " ");
+            char *input_element = strtok(NULL, " ");
+
+            if (input_list == NULL || input_pos == NULL) {
                 printInvalidCommand("INSERT");
                 continue;
-            } 
+            }
+
+            struct mtll *tmp = all_lists;
+            size_t count = 0;
+            
+            while (tmp != NULL) {    
+                if ((tmp)->id == atoi(arguments)) {
+                    mtll_insert(tmp, atoi(input_pos), input_element);
+                    break;
+                }
+                tmp = (tmp)->next;
+                count++;
+            }
+
+            mtll_view(tmp);
+
+            if (count == size) {
+                printInvalidCommand("INSERT");
+            }
+
         }   
         else if (strncmp(input, "DELETE ", 7) == 0) {
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
@@ -256,14 +279,16 @@ int main(int argc, char** argv) {
 
     //check brackets (if pair on same line with valid number between then valid, else invalid )
     
-    struct mtll *curr_list = all_lists;
-    while (curr_list != NULL) {
-        struct mtll *next_list = curr_list->next;
-        mtll_free(curr_list); 
-        curr_list = next_list; 
-    }
+    if (all_lists != NULL) {
+         struct mtll *curr_list = all_lists;
+        while (curr_list != NULL) {
+            struct mtll *next_list = curr_list->next;
+            mtll_free(curr_list); 
+            curr_list = next_list; 
+        }
 
-    // free(all_lists);
+        // free(all_lists);
+    }
 
     return 0;
 }

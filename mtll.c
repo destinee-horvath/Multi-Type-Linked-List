@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+
 #include "mtll.h"
 
 /**
@@ -17,7 +19,6 @@ void *convertData(char *input, enum DataType datatype) {
     switch(datatype) {
         case INT:
             converted = malloc(sizeof(int));
-            *((int *)converted) = atoi(input);
             break;
 
         case FLOAT: 
@@ -61,7 +62,7 @@ enum DataType checkType(char *input) {
         return FLOAT; 
     }
 
-    if (strlen(input) == 1 && strcmp(input, "\t") != 0 ) { //&& strcmp(input, " ") != 0 single whitespace is string 
+    if (strlen(input) == 1 || strcmp(input, "\t") == 0 || isprint(input[0]) == 0) { //&& strcmp(input, " ") != 0 single whitespace is string 
         return CHAR; 
     }
 
@@ -130,7 +131,11 @@ void make_list(struct mtll *node_head, size_t size) {
         }
 
         new_node->next = NULL;
-        new_node->data = convertData(input, new_node->type);        
+        new_node->data = convertData(input, new_node->type);    
+
+        if (new_node->data == NULL) { 
+            printf("Conversion fail\n");
+        }    
         
         if (current == NULL) { //first node
             node_head->head = new_node;
@@ -161,7 +166,9 @@ void mtll_free(struct mtll *head) {
     while (node_curr != NULL) {
         struct Node *node_tmp = node_curr;
         node_curr = node_curr->next;
-        free(node_tmp->data);
+        if (node_tmp->data != NULL) {
+            free(node_tmp->data);
+        }
         free(node_tmp);
     }
 
@@ -287,6 +294,7 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
 */
 void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
     if (to_remove == NULL || *lists == NULL || lists == NULL) { 
+        printInvalidCommand("REMOVE");
         return;
     }
 
@@ -312,5 +320,96 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
     printf("List %ld has been removed.\n", curr->id);
 
     mtll_free(to_remove);
+
+}
+
+/**
+ * Inserts something into list 
+ * Parameters: 
+ *      - struct mtl * : list
+ *      - size_t       : index 
+ *      - void *       : value
+*/
+void mtll_insert(struct mtll *list, size_t index, char *value) {
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    if (new_node == NULL) {
+        printInvalidCommand("INSERT");
+        return;
+    }
+
+    new_node->type = checkType(value);
+    new_node->data = convertData(value, new_node->type);
+    new_node->next = NULL;
+    
+
+    //insert at beginning 
+    if (index == 0 || list->head == NULL) {
+        new_node->next = list->head;
+        list->head = new_node;
+        return;
+    }
+
+    struct Node *current = list->head;
+    size_t i = 0;
+
+    //index < 0 add to end 
+    if (index < 1) { 
+        while (current->next != NULL) {
+        current = current->next;
+        index++;
+        }
+
+        new_node->next = current->next;
+        current->next = new_node;
+        return;
+    }
+
+    //insert not at beginning 
+    while (current->next != NULL && i < index - 1) {
+        current = current->next;
+        i++;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+
+}
+
+
+/**
+ * Deletes a node at a position 
+ * Parameters: 
+ *      - struct mtl * : list
+ *      - size_t       : index 
+*/
+void mtll_delete(struct mtll *list, size_t index) {
+    if (list == NULL || list->head == NULL || index < 0) {
+        printInvalidCommand("DELETE");
+        return; 
+    }
+
+    struct Node *current = list->head;
+    struct Node *prev = NULL;
+    size_t i = 0;
+
+    while (current != NULL && i < index) {
+        prev = current;
+        current = current->next;
+        i++;
+    }
+
+    if (current == NULL) {
+        printInvalidCommand("DELETE");
+        return;
+    }
+
+    if (prev == NULL) {
+        list->head = current->next;
+    } else {
+        prev->next = current->next;
+    }
+
+    free(current->data); 
+    free(current);
 
 }
