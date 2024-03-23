@@ -19,6 +19,7 @@ void *convertData(char *input, enum DataType datatype) {
     switch(datatype) {
         case INT:
             converted = malloc(sizeof(int));
+            *((int *)converted) = atof(input);
             break;
 
         case FLOAT: 
