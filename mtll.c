@@ -61,7 +61,7 @@ enum DataType checkType(char *input) {
         return FLOAT; 
     }
 
-    if (strlen(input) == 1) {
+    if (strlen(input) == 1 && strcmp(input, " ") != 0) { //single whitespace is string 
         return CHAR; 
     }
 
@@ -214,26 +214,26 @@ void mtll_type(struct mtll *node) {
         switch (current->type) {
 
             case INT:
-                printf("int ");
+                printf("int");
                 break;
 
             case FLOAT:
-                printf("float ");
+                printf("float");
                 break;
 
             case STRING:
-                printf("string ");
+                printf("string");
                 break;
 
             case CHAR:
-                printf("char ");
+                printf("char");
                 break;
         
         }
 
         current = current->next;
         if (current != NULL) {
-            printf("-> ");
+            printf(" -> ");
         }
     }
 

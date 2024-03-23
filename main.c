@@ -245,6 +245,7 @@ int main(int argc, char** argv) {
             } 
         }
         else { //includes commands like NEW1 (missing whitespace)
+            printf("INPUT: %s\n", input);
             printInvalidCommand("INPUT");
         }
     }
