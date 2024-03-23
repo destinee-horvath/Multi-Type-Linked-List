@@ -100,7 +100,8 @@ void make_list(struct mtll *node_head, size_t size) {
     size_t i = 0;
     while (i < size) {
         if (fgets(input, sizeof(input), stdin) == NULL) { //user didn't enter anything
-            strcpy(input, " ");  
+            strcpy(input, " ");
+            new_node->type = CHAR;  
         }
         
         input[strcspn(input, "\n")] = '\0'; //to remove newline character if it exists
@@ -118,7 +119,10 @@ void make_list(struct mtll *node_head, size_t size) {
         //create new node and store infos
         struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
         
-        new_node->type = checkType(input);            
+        if (new_node->type != NULL) {
+            new_node->type = checkType(input);            
+        }
+        
         new_node->next = NULL;
         new_node->data = convertData(input, new_node->type);        
         
