@@ -59,6 +59,11 @@ int main(int argc, char** argv) {
     char input[MAX_INPUT];
     char *arguments;
 
+    struct mtll *all_lists = NULL; //store mtll lists
+
+    size_t index_lists = 0;
+    size_t size_heads = 0;
+
     while (fgets(input, sizeof(input), stdin) != NULL) {  
         if (strncmp(input, "NEW ", 4) == 0) { 
                 if (input[4] == ' ' || input[4] == '\n' || input[4] == '\0') {   //checks if there is something after whitespace to prevent core dump
@@ -69,16 +74,48 @@ int main(int argc, char** argv) {
                 arguments = strtok(input + 4, "\n");  
 
                 if (checkArguments(input + 4, arguments, 1) != 0 || 
-                        arguments == NULL || checkType(arguments) != 0) {
+                        arguments == NULL || checkType(arguments) != 0 || arguments <= 0) {
                     printInvalidCommand("NEW");
                     continue;
                 } 
 
-                if (arguments <= 0) {
-                    printInvalidCommand("NEW");
-                    continue;
+                //create new head node 
+                struct mtll *new_node = mtll_create(); 
+                new_node->id = index_lists;
+
+                //make new list
+                make_list(new_node, atoi(arguments));
+
+                //if there are no heads in all_lists, new_node must be the first head 
+                if (all_lists == NULL) {
+                    all_lists = new_node;
                 }
-            }
+                else {
+                    struct mtll *current_list = all_lists;
+
+                    //traverse to end of all_lists
+                    while (current_list->next != NULL) {
+                        current_list = current_list->next;
+                    }
+                    current_list->next = new_node;
+                }
+
+                //to print results 
+                switch(new_node->type) {
+                    case LIST:
+                        printf("LIST %ld: ", new_node->id);
+                        break;
+
+                    case NESTED:
+                        printf("NESTED %ld: ", new_node->id);
+                        break;
+                }
+
+                mtll_view(new_node);
+
+                size_heads++;
+                index_lists++;
+            }   
 
             else if (strncmp(input, "VIEW ALL", 8) == 0 || strncmp(input, "VIEW ALL ", 9) == 0) { 
                 arguments = strtok(input + 8, "\n");  
@@ -178,6 +215,17 @@ int main(int argc, char** argv) {
             else { //includes commands like NEW1 (missing whitespace)
                 printInvalidCommand("INPUT");
             }
+    }
+
+    if (all_lists != NULL) {
+         struct mtll *curr_list = all_lists;
+        while (curr_list != NULL) {
+            struct mtll *next_list = curr_list->next;
+            mtll_free(curr_list); 
+            curr_list = next_list; 
+        }
+
+        // free(all_lists);
     }
 
     return 0;
