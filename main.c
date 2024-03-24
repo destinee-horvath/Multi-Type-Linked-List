@@ -103,11 +103,11 @@ int main(int argc, char** argv) {
                 //to print results 
                 switch(new_node->type) {
                     case LIST:
-                        printf("LIST %ld: ", new_node->id);
+                        printf("List %ld: ", new_node->id);
                         break;
 
                     case NESTED:
-                        printf("NESTED %ld: ", new_node->id);
+                        printf("Nested %ld: ", new_node->id);
                         break;
                 }
 

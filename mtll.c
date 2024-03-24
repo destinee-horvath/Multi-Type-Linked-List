@@ -57,7 +57,8 @@ void mtll_free(struct mtll *head) {
         if ((node_tmp->type == STRING || node_tmp->type == REF) 
                 && node_tmp->type_string != NULL) {
                     
-            free(node_tmp->type_string);
+            // free(node_tmp->type_string);
+            free(node_tmp->data);
         }
 
         //free pointer to data 
@@ -160,6 +161,9 @@ void make_list(struct mtll *node_head, size_t size) {
 
             default: //anything else is just a string like STRING, REF
                 new_node->type_string = strdup(input);
+                if (new_node->type_string == NULL) {
+                    free(new_node);
+                }
                 new_node->data = new_node->type_string;
                 break;
         }
