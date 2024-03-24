@@ -1,43 +1,5 @@
 #include "mtll.h"
 
-/**
- * - Converts user input to correct datatype 
- * Parameters: 
- *      - char * : input
- *      - enum : datatype
- * Returns: 
- *      - void * : converted
-*/
-void *convertData(char *input, enum DataType datatype) {
-    void *converted = NULL; 
-
-    switch(datatype) {
-        case INT:
-            converted = malloc(sizeof(size_t));
-            *((size_t *)converted) = (size_t)atof(input); 
-            break;
-
-        case FLOAT: 
-            converted = malloc(sizeof(float));
-            *((float *)converted) = atof(input);
-            break;
-        
-        case CHAR: 
-            converted = malloc(sizeof(char));
-            *((char *)converted) = input[0]; 
-            break;
-        
-        //anything else is considered string 
-        default: 
-            converted = strdup(input);  //prevent changing original string
-            break;
-    }
-
-    return converted;
-
-    //note freed when free(node->data)
-}
-
 
 /**
  * - Checks the type of data being entered into the linked list 
@@ -79,21 +41,28 @@ enum DataType checkType(char *input) {
  *      struct mtll * : head
 */
 void mtll_free(struct mtll *head) {
+    //case no head 
     if (head == NULL) {
         return; 
     }
 
     struct Node *node_curr = head->head;
 
+    //iterate through linked list 
     while (node_curr != NULL) {
         struct Node *node_tmp = node_curr;
         node_curr = node_curr->next;
-        if (node_tmp->data != NULL) {
-            free(node_tmp->data);
+
+        //if type string, need to free 
+        if (node_tmp->type == STRING && node_tmp->type_string != NULL) {
+            free(node_tmp->type_string);
         }
+        
+        //free node 
         free(node_tmp);
     }
 
+    //free head 
     free(head); 
 }
 
@@ -155,8 +124,8 @@ void make_list(struct mtll *node_head, size_t size) {
         //create new node and store infos
         struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
         
-        new_node->type = checkType(input);     
-
+        //determine input type
+        new_node->type = checkType(input);   
 
         //case for nested lists
         if (input[0] == '{' && input[strlen(input) - 1] == '}') {
@@ -167,7 +136,36 @@ void make_list(struct mtll *node_head, size_t size) {
 
         //set current node parameters
         new_node->next = NULL;
-        new_node->data = convertData(input, new_node->type);    
+        
+        //convert data 
+        switch (new_node->type) {
+            case INT: 
+                new_node->data = &new_node->type_int; 
+                sscanf(input, "%d", &new_node->type_int);
+                break;
+
+            case FLOAT:
+                new_node->data = &new_node->type_float; 
+                sscanf(input, "%f", &new_node->type_float);
+                break;
+
+            case CHAR:
+                new_node->data = &new_node->type_char; 
+                new_node->type_char = input[0];
+                break;
+
+            case STRING:
+                new_node->data = &new_node->type_string;
+                new_node->type_string = strdup(input);
+                break;
+
+            default: //anything else is just a string 
+                new_node->data = &new_node->type_string;
+                new_node->type_string = strdup(input);
+                break;
+        }
+
+
         if (new_node->data == NULL) { 
             printf("Conversion fail??\n");
         }    
@@ -218,11 +216,10 @@ void mtll_view(struct mtll *node) {
                 break;
 
             case CHAR:
-                printf("%c", *((char *)current->data));
+                printf("%c", *((char *)current->data)); 
                 break;
 
-            case REF:
-                printf("%s", (char *)current->data);
+            default:
                 break;
 
             printf(" ");

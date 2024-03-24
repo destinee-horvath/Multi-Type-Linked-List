@@ -28,6 +28,14 @@ enum ListType {
 struct Node {
     void *data;            //store data (of any datatype)
     enum DataType type;    //store type of data 
+
+    union {                //store 
+        int type_int; 
+        float type_float; 
+        char type_char;
+        char *type_string;
+    };
+
     struct Node *next;   
     struct Node *prev;     //mainly used for nested lists
 }; 
