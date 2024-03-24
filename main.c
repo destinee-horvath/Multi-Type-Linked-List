@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
     size_t index_lists = 0;
     size_t size = 0;
 
-    while (fgets(input, sizeof(input), stdin) != NULL) {            
+    while (fgets(input, sizeof(input), stdin) != NULL) {      
         if (strncmp(input, "NEW ", 4) == 0) { 
             if (input[4] == ' ' || input[4] == '\n' || input[4] == '\0') {   //checks if there is something after whitespace to prevent core dump
                 printInvalidCommand("NEW");
@@ -239,6 +239,11 @@ int main(int argc, char** argv) {
                 printInvalidCommand("INSERT");
                 continue;
             }
+
+            if (input_element == NULL) {
+                input_element = " ";
+            }
+
 
             struct mtll *tmp = all_lists;
             size_t count = 0;
