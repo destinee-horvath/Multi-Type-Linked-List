@@ -14,7 +14,8 @@ enum DataType {
     INT,
     FLOAT,
     STRING,      //nest considered string 
-    CHAR
+    CHAR, 
+    REF
     // NEST 
 };
 
@@ -28,6 +29,7 @@ struct Node {
     void *data;            //store data (of any datatype)
     enum DataType type;    //store type of data 
     struct Node *next;   
+    struct Node *prev;     //mainly used for nested lists
 }; 
 
 //list info 
