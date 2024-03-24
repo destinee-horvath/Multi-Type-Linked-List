@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
     char input[MAX_INPUT];
 
     while (fgets(input, sizeof(input), stdin) != NULL) {      
-        printf("%s\n", input);
+        printf("%s", input);
     }
     return 0;
 }
