@@ -53,11 +53,12 @@ void mtll_free(struct mtll *head) {
         struct Node *node_tmp = node_curr;
         node_curr = node_curr->next;
 
+
         //if type string, need to free 
         if (node_tmp->type == STRING && node_tmp->type_string != NULL) {
             free(node_tmp->type_string);
         }
-        
+
         //free node 
         free(node_tmp);
     }
@@ -72,7 +73,7 @@ void mtll_free(struct mtll *head) {
  *      struct mtll : head
 */
 struct mtll *mtll_create() {
-    struct mtll *head = (struct mtll *)malloc(sizeof(struct mtll));
+    struct mtll *head = malloc(sizeof(struct mtll));
 
     if (head == NULL) { //memory allocation failed  
         return NULL;
@@ -122,7 +123,7 @@ void make_list(struct mtll *node_head, size_t size) {
         
         
         //create new node and store infos
-        struct Node *new_node = (struct Node *) malloc(sizeof(struct Node));
+        struct Node *new_node = malloc(sizeof(struct Node));
         
         //determine input type
         new_node->type = checkType(input);   
@@ -159,7 +160,7 @@ void make_list(struct mtll *node_head, size_t size) {
                 new_node->type_string = strdup(input);
                 break;
 
-            default: //anything else is just a string 
+            default: //anything else is just a string like REF
                 new_node->data = &new_node->type_string;
                 new_node->type_string = strdup(input);
                 break;
@@ -182,6 +183,7 @@ void make_list(struct mtll *node_head, size_t size) {
         }
         
         i++;
+        
     }
 }
 
@@ -235,4 +237,81 @@ void mtll_view(struct mtll *node) {
     }
 
     printf("\n");
+}
+
+/**
+ * Prints types of elements in list
+*/
+void mtll_type(struct mtll *node) {
+    if (node == NULL) {
+        return;
+    }
+
+    struct Node *current = node->head;
+
+    while (current != NULL) {
+        switch (current->type) {
+
+            case INT:
+                printf("int");
+                break;
+
+            case FLOAT:
+                printf("float");
+                break;
+
+            case STRING:
+                printf("string");
+                break;
+
+            case CHAR:
+                printf("char");
+                break;
+            
+            case REF: 
+                printf("reference");
+                break;
+        }
+
+        current = current->next;
+        if (current != NULL) {
+            printf(" -> ");
+        }
+    }
+
+    printf("\n");
+}
+
+
+/**
+ * Prints a list of all linked lists 
+ * Parameters:
+ *      struct mtll ** : lists            //pointer to heads of all lists 
+ *      size_t         : num_lists
+*/
+void mtll_view_all(struct mtll **lists, size_t num_lists) {
+    printf("Number of lists: %zu\n", num_lists);
+
+    struct mtll **tmp = lists;
+
+    if (num_lists == 0 || lists == NULL) {
+        return;
+    }
+
+    while ((*tmp) != NULL) {    
+        
+        //print
+        switch((*tmp)->type) {
+            case LIST:
+                printf("List %ld: ", (*tmp)->id);
+                break;
+
+            case NESTED:
+                printf("Nested %ld: ", (*tmp)->id);
+                break;
+        }
+
+        //point to next pointer 
+        tmp = &((*tmp)->next);                 
+    }
 }
