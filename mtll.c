@@ -39,6 +39,7 @@ enum DataType checkType(char *input) {
  * Parameters: 
  *      struct mtll * : head
 */
+
 void mtll_free(struct mtll *head) {
     //case no head 
     if (head == NULL) {
@@ -52,17 +53,14 @@ void mtll_free(struct mtll *head) {
         struct Node *node_tmp = node_curr;
         node_curr = node_curr->next;
 
-
         //if type string, need to free since strdup() used 
         if ((node_tmp->type == STRING || node_tmp->type == REF) 
-                && node_tmp->type_string != NULL) {
-                    
-            // free(node_tmp->type_string);
+            && node_tmp->data != NULL) {
+                
+            // free(node_tmp->data.type_string);
             free(node_tmp->data);
         }
 
-        //free pointer to data 
-        // free(node_tmp->data);
         //free node 
         free(node_tmp);
     }
