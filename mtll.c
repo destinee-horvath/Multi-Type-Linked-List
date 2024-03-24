@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stddef.h>
 
 #include "mtll.h"
 
@@ -107,11 +108,11 @@ void make_list(struct mtll *node_head, size_t size) {
             enter_blank = 1;
         }
         
-        if (strcmp(input, "\n") == 0) {
+        if (strcmp(input, "\n") == 0 || strcmp(input, "\t") == 0) {
             strcpy(input, " ");
             enter_blank = 1;
         }
-        
+
         input[strcspn(input, "\n")] = '\0'; //to remove newline character if it exists
 
         if (strlen(input) >= MAX_INPUT) {
@@ -129,6 +130,9 @@ void make_list(struct mtll *node_head, size_t size) {
         
         if (enter_blank != 1) { //user didnt entered nothing (single whitespace)
             new_node->type = checkType(input);            
+        }
+        else {
+            new_node->type = CHAR;
         }
 
         new_node->next = NULL;
@@ -331,7 +335,7 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
  *      - size_t       : index 
  *      - void *       : value
 */
-void mtll_insert(struct mtll *list, size_t index, char *value) {
+void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
     if (new_node == NULL) {
         printInvalidCommand("INSERT");
@@ -347,6 +351,8 @@ void mtll_insert(struct mtll *list, size_t index, char *value) {
     if (index == 0 || list->head == NULL) {
         new_node->next = list->head;
         list->head = new_node;
+        printf("List %ld: ", list->id);
+        mtll_view(list);
         return;
     }
 
@@ -362,7 +368,17 @@ void mtll_insert(struct mtll *list, size_t index, char *value) {
 
         new_node->next = current->next;
         current->next = new_node;
+        printf("List %ld: ", list->id);
+        mtll_view(list);
         return;
+    }
+
+    //find length of list 
+    size_t list_length = 0;
+    struct Node *tmp = list->head;
+    while (tmp != NULL) {
+        list_length++;
+        tmp = tmp->next;
     }
 
     //insert not at beginning 
@@ -371,8 +387,19 @@ void mtll_insert(struct mtll *list, size_t index, char *value) {
         i++;
     }
 
+    if (i != index - 1) { //index larger than list 
+        printInvalidCommand("INSERT");
+        free(new_node->data);
+        free(new_node);
+        return;
+    }
+
+
     new_node->next = current->next;
     current->next = new_node;
+
+    printf("List %ld: ", list->id);
+    mtll_view(list);
 
 }
 
@@ -383,8 +410,8 @@ void mtll_insert(struct mtll *list, size_t index, char *value) {
  *      - struct mtl * : list
  *      - size_t       : index 
 */
-void mtll_delete(struct mtll *list, size_t index) {
-    if (list == NULL || list->head == NULL || index < 0) {
+void mtll_delete(struct mtll *list, ssize_t index) {
+    if (list == NULL || list->head == NULL) {
         printInvalidCommand("DELETE");
         return; 
     }
@@ -393,17 +420,29 @@ void mtll_delete(struct mtll *list, size_t index) {
     struct Node *prev = NULL;
     size_t i = 0;
 
-    while (current != NULL && i < index) {
-        prev = current;
-        current = current->next;
-        i++;
+    
+    if (index < 0) { //negative index 
+        while (current->next != NULL) {
+            prev = current;
+            current = current->next;
+        }
     }
+    else {
+        while (current != NULL && i < index) {
+            prev = current;
+            current = current->next;
+            i++;
+        }
+    }
+    
 
+    //node not found 
     if (current == NULL) {
         printInvalidCommand("DELETE");
         return;
     }
 
+    //delete
     if (prev == NULL) {
         list->head = current->next;
     } else {
@@ -412,5 +451,8 @@ void mtll_delete(struct mtll *list, size_t index) {
 
     free(current->data); 
     free(current);
+
+    printf("List %ld: ", list->id);
+    mtll_view(list);
 
 }

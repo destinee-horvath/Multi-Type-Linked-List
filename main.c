@@ -231,7 +231,7 @@ int main(int argc, char** argv) {
             char *input_pos = strtok(NULL, " ");
             char *input_element = strtok(NULL, " ");
 
-            if (input_list == NULL || input_pos == NULL) {
+            if (arguments == NULL || input_list == NULL || input_pos == NULL) {
                 printInvalidCommand("INSERT");
                 continue;
             }
@@ -248,8 +248,6 @@ int main(int argc, char** argv) {
                 count++;
             }
 
-            mtll_view(tmp);
-
             if (count == size) {
                 printInvalidCommand("INSERT");
             }
@@ -261,13 +259,30 @@ int main(int argc, char** argv) {
                 continue;
             }
             arguments = strtok(input + 7, "\n");  
+            char *input_list = strtok(arguments, " ");
+            char *input_pos = strtok(NULL, " ");
 
-            if (checkArguments(input + 7, arguments, 3) != 0 || arguments == NULL) {
+            if (arguments == NULL || input_list == NULL || input_pos == NULL) {
                 printInvalidCommand("DELETE");
                 continue;
             } 
+            
+            struct mtll *tmp = all_lists;
+            size_t count = 0;
+            
+            while (tmp != NULL) {    
+                if ((tmp)->id == atoi(arguments)) {
+                    mtll_delete(tmp, atoi(input_pos));
+                    break;
+                }
+                tmp = (tmp)->next;
+                count++;
+            }
 
-            // mtll_delete();
+            if (count == size) {
+                printInvalidCommand("DELETE");
+            }
+
         }
 
         else if (strcmp(input, "\n") == 0) { //input blank 

@@ -56,8 +56,8 @@ extern void mtll_view_all(struct mtll **, size_t);
 
 extern void mtll_remove(struct mtll **, struct mtll *);
 
-extern void mtll_insert(struct mtll *, size_t, char *); 
+extern void mtll_insert(struct mtll *, ssize_t, char *); 
 
-extern void mtll_delete(struct mtll *, size_t); 
+extern void mtll_delete(struct mtll *, ssize_t); 
 
 #endif
