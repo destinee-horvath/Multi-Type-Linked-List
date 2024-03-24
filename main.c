@@ -2,6 +2,47 @@
 
 
 /**
+ * - Checks arguments of the command (if valid datatypes in correct order)
+ * Parameters: 
+ *      - char * : command
+ *      - char * : argument
+ *      - int : num_args
+ * Returns: 
+ *      - 0 if valid 
+ *      - 1 if not valid 
+*/
+int checkArguments(char *command, char *argument, int num_args) {
+    if (num_args == 1) { //NEW, VIEW, TYPE, REMOVE : expects integer argument
+        char *endptr;
+
+        if (checkType(argument) != INT) {
+            return 1;
+        }
+
+        strtol(argument, &endptr, 10);
+
+        if (*endptr == '\0') {
+            return 0;
+        }
+    }
+    else if (num_args == 3) { //INSERT, DELETE : expects at least 2 integer arguments 
+        char *arg1 = strtok(argument, " ");
+        char *arg2 = strtok(NULL, " ");
+        // char *arg3 = strtok(NULL, " ");
+
+        if (arg1 == NULL || arg2 == NULL) { //no arguments
+            return 1;
+        }
+
+        if (checkType(arg1) == 1 && checkType(arg2) == 1) { //two integer arguments 
+            return 0; 
+        }
+    }
+
+    return 0;
+}
+
+/**
  * - Checks commands and inputs 
 */
 int main(int argc, char** argv) {
