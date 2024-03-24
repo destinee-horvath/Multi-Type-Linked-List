@@ -27,8 +27,7 @@ enum DataType checkType(char *input) {
         return FLOAT; 
     }
 
-
-    if (strlen(input) == 1 || strcmp(input, "\t") == 0 || isprint(input[0]) == 0) { //&& strcmp(input, " ") != 0 single whitespace is string 
+    if (strlen(input) == 1 && isprint(input[0])) { // || strcmp(input, "\t") == 0 
         return CHAR; 
     }
 
@@ -54,10 +53,12 @@ void mtll_free(struct mtll *head) {
         node_curr = node_curr->next;
 
 
-        //if type string, need to free 
-        if (node_tmp->type == STRING && node_tmp->type_string != NULL) {
-            free(node_tmp->type_string);
-        }
+        //if type string, need to free since strdup() used 
+        // if ((node_tmp->type == STRING || node_tmp->type == REF) 
+        //         && node_tmp->type_string != NULL) {
+                    
+        //     free(node_tmp->type_string);
+        // }
 
         //free node 
         free(node_tmp);
@@ -155,14 +156,9 @@ void make_list(struct mtll *node_head, size_t size) {
                 new_node->type_char = input[0];
                 break;
 
-            case STRING:
+            default: //anything else is just a string like STRING, REF
                 new_node->data = &new_node->type_string;
-                new_node->type_string = strdup(input);
-                break;
-
-            default: //anything else is just a string like REF
-                new_node->data = &new_node->type_string;
-                new_node->type_string = strdup(input);
+                new_node->type_string = "someTmpString";
                 break;
         }
 
