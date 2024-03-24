@@ -57,6 +57,7 @@ void printInvalidCommand(char *command) {
 */
 int main(int argc, char** argv) {
     char input[MAX_INPUT];
+    char *arguments;
 
     while (fgets(input, sizeof(input), stdin) != NULL) {  
         if (strncmp(input, "NEW ", 4) == 0) { 
@@ -140,7 +141,7 @@ int main(int argc, char** argv) {
 
                 char *input_list = strtok(arguments, " ");
                 char *input_pos = strtok(NULL, " ");
-                char *input_element = strtok(NULL, "");
+                // char *input_element = strtok(NULL, "");
 
                 if (arguments == NULL || 
                     input_list == NULL || checkType(input_list) != INT ||
@@ -178,7 +179,7 @@ int main(int argc, char** argv) {
                 printInvalidCommand("INPUT");
             }
     }
-    
+
     return 0;
 }
 
