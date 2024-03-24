@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stddef.h>
-
 #include "mtll.h"
 
 /**
@@ -19,8 +13,8 @@ void *convertData(char *input, enum DataType datatype) {
 
     switch(datatype) {
         case INT:
-            converted = malloc(sizeof(int));
-            *((int *)converted) = atof(input);
+            converted = malloc(sizeof(size_t));
+            *((size_t *)converted) = (size_t)atof(input); 
             break;
 
         case FLOAT: 
@@ -63,6 +57,7 @@ enum DataType checkType(char *input) {
     if (*endptr == '\0') {
         return FLOAT; 
     }
+
 
     if (strlen(input) == 1 || strcmp(input, "\t") == 0 || isprint(input[0]) == 0) { //&& strcmp(input, " ") != 0 single whitespace is string 
         return CHAR; 
@@ -356,32 +351,36 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
         return;
     }
 
+    //determine list size 
+    size_t list_size = 0;
+    struct Node *tmp = list->head;
+    while (tmp != NULL) {
+        list_size++;
+        tmp = tmp->next;
+    }
+
     struct Node *current = list->head;
     size_t i = 0;
 
-    //index < 0 add to end 
+    //case indexing from back 
     if (index < 0) { 
-        while (current->next != NULL) {
-        current = current->next;
-        index++;
+        current = list->head;
+        size_t back_index = list_size + index + 1; 
+
+        while (current != NULL && back_index > 1) {
+            current = current->next;
+            back_index--;
         }
 
         new_node->next = current->next;
         current->next = new_node;
+
         printf("List %ld: ", list->id);
         mtll_view(list);
         return;
     }
 
-    //find length of list 
-    size_t list_length = 0;
-    struct Node *tmp = list->head;
-    while (tmp != NULL) {
-        list_length++;
-        tmp = tmp->next;
-    }
-
-    //insert not at beginning 
+    //insert middle  
     while (current->next != NULL && i < index - 1) {
         current = current->next;
         i++;
