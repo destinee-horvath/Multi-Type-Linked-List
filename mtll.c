@@ -410,6 +410,9 @@ void mtll_view(struct mtll *node) {
                 break;
 
             case CHAR:
+                if (current->next == NULL && *((char *)current->data) != ' ') { //if last node with space 
+                    printf(" ");
+                }
                 printf("%c", *((char *)current->data)); 
                 break;
 
