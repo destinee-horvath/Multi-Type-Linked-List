@@ -416,15 +416,14 @@ void mtll_view(struct mtll *node) {
             default:
                 break;
 
-            printf(" ");
+            if (current->next != NULL) {
+                printf(" ");
+            }
         }
 
         current = current->next;
         if (current != NULL) {
             printf(" ->");
-        }
-        if (current->next != NULL) {
-            printf(" ");
         }
     }
 
