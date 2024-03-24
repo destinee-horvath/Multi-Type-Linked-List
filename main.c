@@ -62,7 +62,8 @@ int main(int argc, char** argv) {
     size_t index_lists = 0;
     size_t size = 0;
 
-    while (fgets(input, sizeof(input), stdin) != NULL) {
+    while (fgets(input, sizeof(input), stdin) != NULL) {    
+        printf("INPUT: %s\n", input);
         
         if (strncmp(input, "NEW ", 4) == 0) { 
             if (input[4] == ' ' || input[4] == '\n' || input[4] == '\0') {   //checks if there is something after whitespace to prevent core dump
@@ -229,7 +230,7 @@ int main(int argc, char** argv) {
 
             char *input_list = strtok(arguments, " ");
             char *input_pos = strtok(NULL, " ");
-            char *input_element = strtok(NULL, " ");
+            char *input_element = strtok(NULL, "");
 
             if (arguments == NULL || input_list == NULL || input_pos == NULL) {
                 printInvalidCommand("INSERT");

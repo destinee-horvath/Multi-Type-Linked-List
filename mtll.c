@@ -360,7 +360,7 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     size_t i = 0;
 
     //index < 0 add to end 
-    if (index < 1) { 
+    if (index < 0) { 
         while (current->next != NULL) {
         current = current->next;
         index++;
