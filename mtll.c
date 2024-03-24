@@ -39,14 +39,13 @@ enum DataType checkType(char *input) {
  * Parameters: 
  *      struct mtll * : head
 */
-
-void mtll_free(struct mtll *head) {
+void mtll_free(struct mtll *list) {
     //case no head 
-    if (head == NULL) {
+    if (list == NULL) {
         return; 
     }
 
-    struct Node *node_curr = head->head;
+    struct Node *node_curr = list->head;
 
     //iterate through linked list 
     while (node_curr != NULL) {
@@ -66,7 +65,7 @@ void mtll_free(struct mtll *head) {
     }
 
     //free head 
-    free(head); 
+    free(list); 
 }
 
 /**
@@ -194,7 +193,36 @@ void make_list(struct mtll *node_head, size_t size) {
  *      size_t         : num_lists
  *      struct mtll *  : to_remove    //list to remove 
 */
+void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
+    if (to_remove == NULL || *lists == NULL || lists == NULL) { 
+        printInvalidCommand("REMOVE");
+        return;
+    }
 
+    struct mtll *curr = *lists;
+    struct mtll *prev = NULL;
+
+    while (curr != NULL && curr != to_remove) {
+        prev = curr;
+        curr = curr->next;
+    }
+
+    if (curr == NULL) {  //no node found 
+        return;
+    }
+
+    if (prev != NULL) {  //link previous node to next node (skip curr)
+        prev->next = curr->next;
+    }
+    else {  //curr is head 
+        *lists = curr->next;
+    }
+
+    printf("List %ld has been removed.\n", curr->id);
+
+    mtll_free(to_remove);
+
+}
 
 /**
  * mtll_insert : Inserts something into list 
@@ -203,6 +231,101 @@ void make_list(struct mtll *node_head, size_t size) {
  *      - size_t       : index 
  *      - void *       : value
 */
+void mtll_insert(struct mtll *list, ssize_t index, char *value) {
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    if (new_node == NULL) {
+        printInvalidCommand("INSERT");
+        return;
+    }
+
+    new_node->type = checkType(value);
+    switch (new_node->type) {
+        case INT: 
+            new_node->data = &new_node->type_int; 
+            sscanf(value, "%d", &new_node->type_int);
+            break;
+
+        case FLOAT:
+            new_node->data = &new_node->type_float; 
+            sscanf(value, "%f", &new_node->type_float);
+            break;
+
+        case CHAR:
+            new_node->data = &new_node->type_char; 
+            new_node->type_char = value[0];
+            break;
+
+        default: //anything else is just a string like STRING, REF
+            new_node->type_string = strdup(value);
+            if (new_node->type_string == NULL) {
+                free(new_node);
+            }
+            new_node->data = new_node->type_string;
+            break;
+    }
+
+    new_node->next = NULL;
+    
+
+    //insert at beginning 
+    if (index == 0 || list->head == NULL) {
+        new_node->next = list->head;
+        list->head = new_node;
+        printf("List %ld: ", list->id);
+        mtll_view(list);
+        return;
+    }
+
+    //determine list size 
+    size_t list_size = 0;
+    struct Node *tmp = list->head;
+    while (tmp != NULL) {
+        list_size++;
+        tmp = tmp->next;
+    }
+
+    struct Node *current = list->head;
+    size_t i = 0;
+
+    //case indexing from back 
+    if (index < 0) { 
+        current = list->head;
+        size_t back_index = list_size + index + 1; 
+
+        while (current != NULL && back_index > 1) {
+            current = current->next;
+            back_index--;
+        }
+
+        new_node->next = current->next;
+        current->next = new_node;
+
+        printf("List %ld: ", list->id);
+        mtll_view(list);
+        return;
+    }
+
+    //insert middle  
+    while (current->next != NULL && i < index - 1) {
+        current = current->next;
+        i++;
+    }
+
+    if (i != index - 1) { //index larger than list 
+        printInvalidCommand("INSERT");
+        free(new_node->data);
+        free(new_node);
+        return;
+    }
+
+
+    new_node->next = current->next;
+    current->next = new_node;
+
+    printf("List %ld: ", list->id);
+    mtll_view(list);
+
+}
 
 /**
  * mtll_delete : Deletes a node at a position 
@@ -210,7 +333,52 @@ void make_list(struct mtll *node_head, size_t size) {
  *      - struct mtl * : list
  *      - size_t       : index 
 */
+void mtll_delete(struct mtll *list, ssize_t index) {
+    if (list == NULL || list->head == NULL) {
+        printInvalidCommand("DELETE");
+        return; 
+    }
 
+    struct Node *current = list->head;
+    struct Node *prev = NULL;
+    size_t i = 0;
+
+    
+    if (index < 0) { //negative index 
+        while (current->next != NULL) {
+            prev = current;
+            current = current->next;
+        }
+    }
+    else {
+        while (current != NULL && i < index) {
+            prev = current;
+            current = current->next;
+            i++;
+        }
+    }
+    
+
+    //node not found 
+    if (current == NULL) {
+        printInvalidCommand("DELETE");
+        return;
+    }
+
+    //delete
+    if (prev == NULL) {
+        list->head = current->next;
+    } else {
+        prev->next = current->next;
+    }
+
+    free(current->data); 
+    free(current);
+
+    printf("List %ld: ", list->id);
+    mtll_view(list);
+
+}
 
 /**
  * mtll_view : Prints all the elements in the specified linked list 
@@ -327,11 +495,11 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
         //print
         switch((*tmp)->type) {
             case LIST:
-                printf("List %ld: ", (*tmp)->id);
+                printf("List %ld\n", (*tmp)->id);
                 break;
 
             case NESTED:
-                printf("Nested %ld: ", (*tmp)->id);
+                printf("Nested %ld\n", (*tmp)->id);
                 break;
         }
 

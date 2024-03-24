@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
     struct mtll *all_lists = NULL; //store mtll lists
 
     size_t index_lists = 0;
-    size_t size_heads = 0;
+    size_t size_lists = 0;
 
     while (fgets(input, sizeof(input), stdin) != NULL) {  
         if (strncmp(input, "NEW ", 4) == 0) { 
@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
 
                 mtll_view(new_node);
 
-                size_heads++;
+                size_lists++;
                 index_lists++;
             }   
 
@@ -124,6 +124,8 @@ int main(int argc, char** argv) {
                     printInvalidCommand("VIEW ALL");
                     continue;
                 } 
+
+                mtll_view_all(&all_lists, size_lists);
             }
 
             else if (strncmp(input, "VIEW ", 5) == 0) { 
@@ -138,6 +140,22 @@ int main(int argc, char** argv) {
                     printInvalidCommand("VIEW");
                     continue;
                 }   
+
+                struct mtll *tmp = all_lists;
+                size_t count = 0;
+
+                while (tmp != NULL) {    
+                    if ((tmp)->id == atoi(arguments)) {
+                        mtll_view((tmp));
+                        break;
+                    }
+                    tmp = (tmp)->next;
+                    count++;
+                }
+
+                if (count == size_lists) {
+                    printInvalidCommand("VIEW");
+                }
             
             }
 
@@ -153,6 +171,22 @@ int main(int argc, char** argv) {
                     continue;
                 } 
 
+                struct mtll *tmp = all_lists; 
+                size_t count = 0;
+
+                while (tmp != NULL) {    
+                    if (tmp->id == atoi(arguments)) {
+                        mtll_type(tmp);
+                        break;
+                    }
+                    tmp = tmp->next;
+                    count++;
+                }
+
+                if (count == size_lists) {
+                    printInvalidCommand("TYPE");
+                }
+
             }
             
             else if (strncmp(input, "REMOVE ", 7) == 0) { 
@@ -167,6 +201,24 @@ int main(int argc, char** argv) {
                     continue;
                 } 
 
+                size_t list_id = atoi(arguments);
+                struct mtll *to_remove = all_lists;
+
+                while (to_remove != NULL && to_remove->id != list_id) {
+                    to_remove = to_remove->next;
+                }
+
+                if (to_remove != NULL) {
+                    mtll_remove(&all_lists, to_remove);
+                    printf("\n");
+                    size_lists--;
+                    mtll_view_all(&all_lists, size_lists);
+                    continue;
+                }
+                else {
+                    printInvalidCommand("REMOVE");
+                }
+
             }
 
             else if (strncmp(input, "INSERT ", 7) == 0) {
@@ -178,7 +230,7 @@ int main(int argc, char** argv) {
 
                 char *input_list = strtok(arguments, " ");
                 char *input_pos = strtok(NULL, " ");
-                // char *input_element = strtok(NULL, "");
+                char *input_element = strtok(NULL, "");
 
                 if (arguments == NULL || 
                     input_list == NULL || checkType(input_list) != INT ||
@@ -186,6 +238,22 @@ int main(int argc, char** argv) {
             
                     printInvalidCommand("INSERT");
                     continue;
+                }
+
+                struct mtll *tmp = all_lists;
+                size_t count = 0;
+                
+                while (tmp != NULL) {    
+                    if ((tmp)->id == atoi(arguments)) {
+                        mtll_insert(tmp, atoi(input_pos), input_element);
+                        break;
+                    }
+                    tmp = (tmp)->next;
+                    count++;
+                }
+
+                if (count == size_lists) {
+                    printInvalidCommand("INSERT");
                 }
 
             }   
@@ -205,6 +273,22 @@ int main(int argc, char** argv) {
                     printInvalidCommand("DELETE");
                     continue;
                 } 
+
+                struct mtll *tmp = all_lists;
+                size_t count = 0;
+                
+                while (tmp != NULL) {    
+                    if ((tmp)->id == atoi(arguments)) {
+                        mtll_delete(tmp, atoi(input_pos));
+                        break;
+                    }
+                    tmp = (tmp)->next;
+                    count++;
+                }
+
+                if (count == size_lists) {
+                    printInvalidCommand("DELETE");
+                }
 
             }
 
