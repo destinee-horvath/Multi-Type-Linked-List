@@ -54,12 +54,14 @@ void mtll_free(struct mtll *head) {
 
 
         //if type string, need to free since strdup() used 
-        // if ((node_tmp->type == STRING || node_tmp->type == REF) 
-        //         && node_tmp->type_string != NULL) {
+        if ((node_tmp->type == STRING || node_tmp->type == REF) 
+                && node_tmp->type_string != NULL) {
                     
-        //     free(node_tmp->type_string);
-        // }
+            free(node_tmp->type_string);
+        }
 
+        //free pointer to data 
+        // free(node_tmp->data);
         //free node 
         free(node_tmp);
     }
@@ -127,7 +129,7 @@ void make_list(struct mtll *node_head, size_t size) {
         struct Node *new_node = malloc(sizeof(struct Node));
         
         //determine input type
-        new_node->type = checkType(input);   
+        new_node->type = checkType(input);  
 
         //case for nested lists
         if (input[0] == '{' && input[strlen(input) - 1] == '}') {
@@ -157,8 +159,8 @@ void make_list(struct mtll *node_head, size_t size) {
                 break;
 
             default: //anything else is just a string like STRING, REF
-                new_node->data = &new_node->type_string;
-                new_node->type_string = "someTmpString";
+                new_node->type_string = strdup(input);
+                new_node->data = new_node->type_string;
                 break;
         }
 
@@ -183,9 +185,33 @@ void make_list(struct mtll *node_head, size_t size) {
     }
 }
 
+/**
+ * mtll_remove : Deletes a list 
+ * Parameters:
+ *      struct mtll ** : lists            
+ *      size_t         : num_lists
+ *      struct mtll *  : to_remove    //list to remove 
+*/
+
 
 /**
- * Prints all the elements in the specified linked list 
+ * mtll_insert : Inserts something into list 
+ * Parameters: 
+ *      - struct mtl * : list
+ *      - size_t       : index 
+ *      - void *       : value
+*/
+
+/**
+ * mtll_delete : Deletes a node at a position 
+ * Parameters: 
+ *      - struct mtl * : list
+ *      - size_t       : index 
+*/
+
+
+/**
+ * mtll_view : Prints all the elements in the specified linked list 
  * Parameters: 
  *     struct mtll * : node
 */
@@ -236,7 +262,7 @@ void mtll_view(struct mtll *node) {
 }
 
 /**
- * Prints types of elements in list
+ * mtll_type : Prints types of elements in list
 */
 void mtll_type(struct mtll *node) {
     if (node == NULL) {
@@ -280,7 +306,7 @@ void mtll_type(struct mtll *node) {
 
 
 /**
- * Prints a list of all linked lists 
+ * mtll_view_all : Prints a list of all linked lists 
  * Parameters:
  *      struct mtll ** : lists            //pointer to heads of all lists 
  *      size_t         : num_lists

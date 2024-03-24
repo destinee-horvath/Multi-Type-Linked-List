@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
                 new_node->id = index_lists;
 
                 //make new list
-                // make_list(new_node, atoi(arguments));
+                make_list(new_node, atoi(arguments));
 
                 //if there are no heads in all_lists, new_node must be the first head 
                 if (all_lists == NULL) {
