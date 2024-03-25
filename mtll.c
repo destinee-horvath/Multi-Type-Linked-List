@@ -641,6 +641,7 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
  * Parameters:
  *      struct mtll ** : lists
  *      struct mtll *  : node         list with index user entered 
+ *      size_t         : recurse      used to determine position of nested in list 
 */
 void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
     if (node == NULL) {
@@ -648,7 +649,8 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
     }
 
     struct Node *current = node->head;
-
+    
+    //base cases
     if (current == NULL) {
         printf("\n");
         return;
@@ -736,7 +738,8 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
 
             case REF:      
                 printf("{"); 
-                // mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
+                nested_view(lists[upwrap_nest((char *)current->data)]);
+                //mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
                 printf("}");
                 break;
             
@@ -757,6 +760,9 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
 }
 
 
+/**
+ * - View list by node
+*/
 void nested_view(struct mtll *node) {
     if (node == NULL) {
         return;
@@ -814,5 +820,27 @@ void nested_view(struct mtll *node) {
         }
 
     }
+
+}
+
+/**
+ * - View list by id 
+*/
+void nested_view_id(struct mtll **lists, size_t id_list) {
+    struct mtll *current_list = *lists;
+
+    //find list with id
+    while (current_list != NULL) {
+        if (current_list->id == id_list) {
+
+            //print nested list 
+            nested_view(current_list);
+            return;
+        }
+
+        current_list = current_list->next;
+    }
+
+    printf("List not found\n");
 
 }

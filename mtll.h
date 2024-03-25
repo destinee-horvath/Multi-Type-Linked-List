@@ -87,4 +87,6 @@ extern void mtll_view_nested(struct mtll **, struct mtll *, size_t);
 
 extern void nested_view(struct mtll *); 
 
+extern void nested_view_id(struct mtll **, size_t);
+
 #endif
