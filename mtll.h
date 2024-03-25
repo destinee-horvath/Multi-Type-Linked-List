@@ -29,7 +29,7 @@ struct Node {
     void *data;            //store data (of any datatype)
     enum DataType type;    //store type of data 
 
-    union {                //store 
+    union {                //store converted data 
         int type_int; 
         float type_float; 
         char type_char;
@@ -50,6 +50,8 @@ struct mtll {
 
 
 //helper functions 
+extern void clearBuff();
+
 extern void *convertData(char *, enum DataType);
 
 extern void printInvalidCommand(char *);
