@@ -370,9 +370,14 @@ void mtll_delete(struct mtll *list, ssize_t index) {
     //determine list size 
     size_t list_size = 0;
     struct Node *tmp = list->head;
-    while (tmp->next != NULL) {
-        list_size++;
-        tmp = tmp->next;
+    if (tmp->next == NULL) {
+        list_size = 1;
+    } 
+    else {
+        while (tmp != NULL) {
+            list_size++;
+            tmp = tmp->next;
+        }
     }
     
     //case negative index - delete end  
