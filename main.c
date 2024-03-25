@@ -325,26 +325,26 @@ int main(int argc, char** argv) {
             } 
 
             // if (atoi(input_list) < 0) {
-            //     printInvalidCommand("DELETE");
-            //     continue;
-            // }
+                printInvalidCommand("DELETE");
+                continue;
+            }
 
-            // struct mtll *tmp = all_lists;
-            // size_t count = 0;
+            struct mtll *tmp = all_lists;
+            size_t count = 0;
             
-            // //traverse to find list 
-            // while (tmp != NULL) {    
-            //     if ((tmp)->id == atoi(arguments)) {
-            //         mtll_delete(tmp, atoi(input_pos));
-            //         break;
-            //     }
-            //     tmp = (tmp)->next;
-            //     count++;
-            // }
+            //traverse to find list 
+            while (tmp != NULL) {    
+                if ((tmp)->id == atoi(arguments)) {
+                    mtll_delete(tmp, atoi(input_pos));
+                    break;
+                }
+                tmp = (tmp)->next;
+                count++;
+            }
 
-            // if (count == size_lists) {
-            //     printInvalidCommand("DELETE");
-            // }
+            if (count == size_lists) {
+                printInvalidCommand("DELETE");
+            }
 
         }
 
