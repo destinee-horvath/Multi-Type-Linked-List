@@ -2,11 +2,11 @@
 
 
 /**
- * - Checks the type of data being entered into the linked list 
+ * - Checks the type of data passed through argument
  * Parameters: 
  *      - char * : input
  * Returns: 
- *      - enum Datatype
+ *      - enum Datatype 
 */
 enum DataType checkType(char *input) {
     if (input == NULL) {
@@ -316,7 +316,7 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     //case indexing from back 
     if (index < 0) { 
         current = list->head;
-        index = list_size + index + 1;
+        index = list_size + 1 + index;
         
         if (index < 0) { //exceeds size of list S
             printInvalidCommand("INSERT");
@@ -346,6 +346,7 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     }
 
     size_t i = 0;
+    //insert at middle and end 
     while (current->next != NULL && i < index - 1) {
         if (i == index) {
             new_node->next = current->next;
@@ -380,53 +381,63 @@ void mtll_delete(struct mtll *list, ssize_t index) {
         return; 
     }
 
-    //set temporary pointers 
-    struct Node *current = list->head;
-    struct Node *prev = NULL;
-    size_t i = 0;
-
     //determine list size 
     struct Node *tmp = list->head;
     size_t list_size = sizeList(tmp);
     
-    //case negative index - delete end  
+    //case negative index
     if (index < 0) { 
-        index = list_size + index + 1;
-
-        if (index < 0) { //exceeds size of list 
+        index = list_size + index;
+        if (index < 0) { 
             printInvalidCommand("DELETE");
             return;
         }
     }
 
-    while (current != NULL && i < index) {
-        prev = current;
-        current = current->next;
-        i++;
+    //index larger than list 
+    if (index > list_size) { 
+        printInvalidCommand("DELETE");
+        return;
     }
-    
+
+    //case deleting head 
+    if (index == 0) {
+        struct Node *delete = list->head;
+        list->head = list->head->next;
+
+        if ((delete->type == STRING || delete->type == REF) && delete->data != NULL) {
+            free(delete->data);
+        }
+
+        free(delete);
+
+        printf("List %ld: ", list->id);
+        mtll_view(list);
+        return;
+    }
+
+    //set temporary pointers 
+    struct Node *current = list->head;
+    size_t i = 0;
+
+    for (size_t i = 0; i < index - 1; i++) {
+        current = current->next;
+    }
+
     //node not found 
     if (current == NULL) {
         printInvalidCommand("DELETE");
         return;
     }
 
-    //delete
-    if (prev == NULL) {
-        list->head = current->next;
-    } 
-    else {
-        prev->next = current->next;
-    }
-
-
+    struct Node *delete = current->next;
+    current->next = current->next->next;
     //free if string since strdup() was used 
-    if ((current->type == STRING || current->type == REF) && current->data != NULL) {
-        free(current->data);
+    if ((delete->type == STRING || delete->type == REF) && delete->data != NULL) {
+        free(delete->data);
     }
 
-    //free node 
-    free(current);
+    free(delete);
 
     printf("List %ld: ", list->id);
     mtll_view(list);
