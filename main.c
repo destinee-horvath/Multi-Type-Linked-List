@@ -315,10 +315,11 @@ int main(int argc, char** argv) {
             arguments = strtok(input + 7, "\n");  
             char *input_list = strtok(arguments, " ");
             char *input_pos = strtok(NULL, " ");
+            char *input_value = strtok(NULL, "");
 
             if (arguments == NULL || 
                 input_list == NULL || checkType(input_list) != INT ||
-                input_pos == NULL || checkType(input_pos) != INT) {
+                input_pos == NULL || checkType(input_pos) != INT || input_value!=NULL) {
 
                 printInvalidCommand("DELETE");
                 continue;
@@ -357,6 +358,10 @@ int main(int argc, char** argv) {
         //input cases where user didnt add arguments 
         else if (strncmp(input, "NEW", 3) == 0) { 
             printInvalidCommand("NEW");
+            continue;
+        }
+        else if (strncmp(input, "VIEW-NESTED", 11) == 0) { 
+            printInvalidCommand("VIEW-NESTED");
             continue;
         }
         else if (strncmp(input, "VIEW", 4) == 0) { 

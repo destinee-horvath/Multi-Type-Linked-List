@@ -243,9 +243,9 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
  *      - void *       : value
 */
 void mtll_insert(struct mtll *list, ssize_t index, char *value) {
+    //if value is null, set it to whitespace
     if (value == NULL) {
-        printInvalidCommand("INSERT");
-        return;
+        value = " ";
     }
 
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
@@ -275,9 +275,14 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
         default: //anything else is just a string like STRING, REF
             new_node->type_string = strdup(value);
             if (new_node->type_string == NULL) {
+                printInvalidCommand("INSERT");
                 free(new_node);
+                return;
             }
             new_node->data = new_node->type_string;
+            if (strlen(value) + 12 >= MAX_INPUT) {
+                clearBuff();
+            }
             break;
     }
 
@@ -322,6 +327,11 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
         i++;
     }
 
+    //case append to end 
+    if (index + 1 == list_size) {
+        current->next = new_node;
+    }
+
     //index larger than list 
     if (i != index - 1) { 
         printInvalidCommand("INSERT");
@@ -336,6 +346,7 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
 
     printf("List %ld: ", list->id);
     mtll_view(list);
+    return;
 
 }
 
@@ -356,23 +367,30 @@ void mtll_delete(struct mtll *list, ssize_t index) {
     struct Node *prev = NULL;
     size_t i = 0;
 
+    //determine list size 
+    size_t list_size = 0;
+    struct Node *tmp = list->head;
+    while (tmp->next != NULL) {
+        list_size++;
+        tmp = tmp->next;
+    }
     
     //case negative index - delete end  
     if (index < 0) { 
-        while (current->next != NULL) {
-            prev = current;
-            current = current->next;
+        index = list_size + index + 1;
+
+        if (index < 0) { //exceeds size of list 
+            printInvalidCommand("DELETE");
+            return;
         }
     }
-    else {
-        while (current != NULL && i < index) {
-            prev = current;
-            current = current->next;
-            i++;
-        }
+
+    while (current != NULL && i < index) {
+        prev = current;
+        current = current->next;
+        i++;
     }
     
-
     //node not found 
     if (current == NULL) {
         printInvalidCommand("DELETE");
