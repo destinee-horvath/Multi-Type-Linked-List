@@ -292,7 +292,6 @@ int main(int argc, char** argv) {
             //traverse to find list to insert element into 
             while (tmp != NULL) {    
                 if (tmp->id == atoi(arguments)) {
-                    printf("**");
                     mtll_insert(tmp, atoi(input_pos), input_element);
                     break;
                 }

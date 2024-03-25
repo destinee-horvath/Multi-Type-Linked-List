@@ -453,7 +453,7 @@ void mtll_view(struct mtll *node) {
 
     //first node is whitespace char
     if (current->type == CHAR && *((char *)current->data) == ' ') {
-        printf(" -> ");
+        printf("  -> ");
         current = current->next;
     }
 
