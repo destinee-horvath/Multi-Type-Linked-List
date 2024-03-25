@@ -320,6 +320,7 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
         return;
     }
 
+
     //determine type of value 
     new_node->type = checkType(value);
     switch (new_node->type) {
@@ -345,6 +346,13 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
                 free(new_node);
                 return;
             }
+
+            //inserted nested list 
+            if (upwrap_nest(value) != -1) {
+                list->type = NESTED;
+                new_node->type = REF;
+            }
+
             new_node->data = new_node->type_string;
             if (strlen(value) + 12 >= MAX_INPUT) {
                 clearBuff();
@@ -410,7 +418,16 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     new_node->next = current->next;
     current->next = new_node;
 
-    printf("List %ld: ", list->id);
+    
+    switch(list->type) {
+        case LIST:
+            printf("List %ld: ", list->id);
+            break;
+
+        case NESTED:
+            printf("Nested %ld: ", list->id);
+            break;
+    }
     mtll_view(list);
     return;
 
@@ -485,7 +502,35 @@ void mtll_delete(struct mtll *list, ssize_t index) {
 
     free(delete);
 
-    printf("List %ld: ", list->id);
+    //check if nested list exists in list 
+    struct Node *check_ref = list->head;
+    size_t count = 0;
+    while (check_ref != NULL) {
+        if (check_ref->type == REF) {
+            count++;  //increment count if found 
+            break;
+        }
+        check_ref = check_ref->next;
+    }
+
+    //nested list found
+    if (count > 0) {
+        list->type = NESTED;
+    }
+    else {
+        list->type = LIST;
+    }
+
+    //print
+    switch(list->type) {
+        case LIST:
+            printf("List %ld: ", list->id);
+            break;
+
+        case NESTED:
+            printf("Nested %ld: ", list->id);
+            break;
+    }
     mtll_view(list);
 
 }
@@ -738,8 +783,8 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
 
             case REF:      
                 printf("{"); 
-                nested_view(lists[upwrap_nest((char *)current->data)]);
-                //mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
+                //nested_view(lists[upwrap_nest((char *)current->data)]);
+                mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
                 printf("}");
                 break;
             
@@ -757,11 +802,14 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
     }
 
     printf("\n");
+    return;
 }
 
 
 /**
- * - View list by node
+ * - View list by given head node
+ * Parameters:
+ *      struct mtll * : node
 */
 void nested_view(struct mtll *node) {
     if (node == NULL) {
@@ -824,7 +872,10 @@ void nested_view(struct mtll *node) {
 }
 
 /**
- * - View list by id 
+ * - Find list by id then print 
+ * Parameters:
+ *      struct mtll ** : lists
+ *      size_ t        : id_lists 
 */
 void nested_view_id(struct mtll **lists, size_t id_list) {
     struct mtll *current_list = *lists;
