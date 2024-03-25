@@ -94,6 +94,9 @@ void make_list(struct mtll *node_head, size_t size) {
     char input[MAX_INPUT];
     struct Node *current = node_head->head;
 
+    //initialise input buffer
+    memset(input, 0, sizeof(input));
+
     size_t i = 0;
 
     //loop to create list of size 
