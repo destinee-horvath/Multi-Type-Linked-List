@@ -243,12 +243,16 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
  *      - void *       : value
 */
 void mtll_insert(struct mtll *list, ssize_t index, char *value) {
-    if (new_node == NULL) {
+    if (value == NULL) {
         printInvalidCommand("INSERT");
         return;
     }
 
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    if (new_node == NULL) {
+        printInvalidCommand("INSERT");
+        return;
+    }
 
     //determine type of value 
     new_node->type = checkType(value);
