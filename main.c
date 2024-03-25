@@ -271,7 +271,7 @@ int main(int argc, char** argv) {
             //seperate arguments 
             char *input_list = strtok(arguments, " ");
             char *input_pos = strtok(NULL, " ");
-            char *input_element = strtok(NULL, ""); //if empty set as single whitespace character
+            // char *input_element = strtok(NULL, ""); //if empty set as single whitespace character
 
             if (arguments == NULL || 
                 input_list == NULL || checkType(input_list) != INT ||
@@ -281,27 +281,27 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            if (atoi(input_list) < 0) {
-                printInvalidCommand("INSERT");
-                continue;
-            }
+            // if (atoi(input_list) < 0) {
+            //     printInvalidCommand("INSERT");
+            //     continue;
+            // }
 
-            struct mtll *tmp = all_lists;
-            size_t count = 0;
+            // struct mtll *tmp = all_lists;
+            // size_t count = 0;
             
-            //traverse to find list to insert element into 
-            while (tmp != NULL) {    
-                if ((tmp)->id == atoi(arguments)) {
-                    mtll_insert(tmp, atoi(input_pos), input_element);
-                    break;
-                }
-                tmp = (tmp)->next;
-                count++;
-            }
+            // //traverse to find list to insert element into 
+            // while (tmp != NULL) {    
+            //     if ((tmp)->id == atoi(arguments)) {
+            //         mtll_insert(tmp, atoi(input_pos), input_element);
+            //         break;
+            //     }
+            //     tmp = (tmp)->next;
+            //     count++;
+            // }
 
-            if (count == size_lists) {
-                printInvalidCommand("INSERT");
-            }
+            // if (count == size_lists) {
+            //     printInvalidCommand("INSERT");
+            // }
 
 
 
@@ -324,29 +324,27 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            if (atoi(input_list) < 0) {
-                printInvalidCommand("DELETE");
-                continue;
-            }
+            // if (atoi(input_list) < 0) {
+            //     printInvalidCommand("DELETE");
+            //     continue;
+            // }
 
-            struct mtll *tmp = all_lists;
-            size_t count = 0;
+            // struct mtll *tmp = all_lists;
+            // size_t count = 0;
             
-            //traverse to find list 
-            while (tmp != NULL) {    
-                if ((tmp)->id == atoi(arguments)) {
-                    mtll_delete(tmp, atoi(input_pos));
-                    break;
-                }
-                tmp = (tmp)->next;
-                count++;
-            }
+            // //traverse to find list 
+            // while (tmp != NULL) {    
+            //     if ((tmp)->id == atoi(arguments)) {
+            //         mtll_delete(tmp, atoi(input_pos));
+            //         break;
+            //     }
+            //     tmp = (tmp)->next;
+            //     count++;
+            // }
 
-            if (count == size_lists) {
-                printInvalidCommand("DELETE");
-            }
-
-
+            // if (count == size_lists) {
+            //     printInvalidCommand("DELETE");
+            // }
 
         }
 
