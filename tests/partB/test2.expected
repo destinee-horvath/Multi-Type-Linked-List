@@ -1,3 +1,11 @@
-biscuits
-INVALID COMMAND: INSERT
-List 0: jam -> biscuits
+List 0: 
+List 0: element1
+List 0: element2 -> element1
+List 0: element3 -> element2 -> element1
+List 0: element4 -> element3 -> element2 -> element1
+List 0: element5 -> element4 -> element3 -> element2 -> element1
+List 1: a -> d -> end
+List 1: a -> b -> d -> end
+List 1: a -> b -> c -> d -> end
+List 1: a -> b -> c -> d -> e -> end
+List 1: begin -> a -> b -> c -> d -> e -> end

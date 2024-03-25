@@ -1,0 +1,20 @@
+List 0: hello -> world
+List 1: apples -> 3 -> 5.40
+List 2: 10 -> 9.50 -> b -> a
+Number of lists: 3
+List 0
+List 1
+List 2
+List 0 has been removed.
+
+Number of lists: 2
+List 1
+List 2
+List 1 has been removed.
+
+Number of lists: 1
+List 2
+List 2 has been removed.
+
+Number of lists: 0
+INVALID COMMAND: REMOVE

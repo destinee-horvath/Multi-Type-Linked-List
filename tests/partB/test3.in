@@ -1,9 +1,24 @@
-NEW 3
-cows
-chickens 
-4
-rabbits
-fish
-DELETE 0 2
-DELETE 0 -3
-DELETE 0 20
+NEW 5
+a
+b
+c
+d
+e
+DELETE 0 0
+DELETE 0 0
+DELETE 0 0 
+DELETE 0 0
+DELETE 0 0
+DELETE 0 0
+NEW 2
+begin
+end
+INSERT 1 1 new insert
+INSERT 1 1 before new insert
+INSERT 0 0 4
+INSERT 0 1 1000
+INSERT 0 2 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+INSERT 1 2 5
+INSERT 1 3 *
+TYPE 0
+TYPE 1

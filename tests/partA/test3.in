@@ -1,1 +1,17 @@
-NEW 0
+NEW 2
+hello
+world
+NEW 3
+apples
+3
+5.4
+NEW 4
+10
+9.5
+b
+a
+VIEW ALL
+REMOVE 0
+REMOVE 1
+REMOVE 2
+REMOVE 0

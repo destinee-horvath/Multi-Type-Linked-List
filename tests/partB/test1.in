@@ -4,3 +4,7 @@ times
 6.0
 30
 INSERT 0 3 equals
+INSERT 0 0 insert something
+DELETE 0 0
+VIEW ALL
+VIEW 0

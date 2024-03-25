@@ -1,1 +1,9 @@
-List 0: element1 -> 3 -> 4.5 -> carrots -> m
+List 0: element1 -> 3 -> 4.50 -> carrots -> m
+List 1: penguins -> c ->   -> 6
+Number of lists: 2
+List 0
+List 1
+string -> int -> float -> string -> char
+element1 -> 3 -> 4.50 -> carrots -> m
+string -> char -> char -> int
+penguins -> c ->   -> 6

@@ -1,5 +1,8 @@
 List 0: 1 -> 2 -> 3 -> 4
-Nested 0: Numbers -> {List 0} -> end
-Number of lists: 2
-List 0
-Nested 0
+Nested 1: Numbers: -> {List 0} -> end
+1 -> 2 -> 3 -> 4
+int -> int -> int -> int
+Numbers: -> {List 0} -> end
+string -> reference -> string
+1 -> 2 -> 3 -> 4
+Numbers: -> {1 -> 2 -> 3 -> 4} -> end

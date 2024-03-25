@@ -1,1 +1,7 @@
-List 0: 5 -> times -> 6.0 -> equals -> 30
+List 0: 5 -> times -> 6.00 -> 30
+List 0: 5 -> times -> 6.00 -> equals -> 30
+List 0: insert something -> 5 -> times -> 6.00 -> equals -> 30
+List 0: 5 -> times -> 6.00 -> equals -> 30
+Number of lists: 1
+List 0
+5 -> times -> 6.00 -> equals -> 30

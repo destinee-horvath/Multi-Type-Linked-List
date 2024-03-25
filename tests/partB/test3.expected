@@ -1,3 +1,17 @@
-cows -> chickens -> rabbits -> fish
-cows -> chickens -> rabbits
+List 0: a -> b -> c -> d -> e
+List 0: b -> c -> d -> e
+List 0: c -> d -> e
+List 0: d -> e
+List 0: e
+List 0: 
 INVALID COMMAND: DELETE
+List 1: begin -> end
+List 1: begin -> new insert -> end
+List 1: begin -> before new insert -> new insert -> end
+List 0: 4
+List 0: 4 -> 1000
+List 0: 4 -> 1000 -> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+List 1: begin -> before new insert -> 5 -> new insert -> end
+List 1: begin -> before new insert -> 5 -> * -> new insert -> end
+int -> int -> string
+string -> string -> int -> char -> string -> string
