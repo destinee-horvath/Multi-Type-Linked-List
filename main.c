@@ -352,6 +352,33 @@ int main(int argc, char** argv) {
             continue;
         }
 
+
+        //input cases where user didnt add arguments 
+        else if (strncmp(input, "NEW", 3) == 0) { 
+            printInvalidCommand("NEW");
+            continue;
+        }
+        else if (strncmp(input, "VIEW", 4) == 0) { 
+            printInvalidCommand("VIEW");
+            continue;
+        }
+        else if (strncmp(input, "TYPE", 4) == 0) { 
+            printInvalidCommand("TYPE");
+            continue;
+        }
+        else if (strncmp(input, "REMOVE", 6) == 0) { 
+            printInvalidCommand("REMOVE");
+            continue;
+        }
+        else if (strncmp(input, "INSERT", 6) == 0) { 
+            printInvalidCommand("INSERT");
+            continue;
+        }
+        else if (strncmp(input, "DELETE", 6) == 0) { 
+            printInvalidCommand("DELETE");
+            continue;
+        }
+
         else { //includes commands like NEW1 (missing whitespace)
             printInvalidCommand("INPUT");
         }
