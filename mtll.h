@@ -60,6 +60,10 @@ enum DataType checkType(char *);
 
 extern size_t sizeList(struct Node *);
 
+size_t upwrap_nest(char *);
+
+size_t list_exists(struct mtll **, size_t);
+
 //Logic functions 
 extern struct mtll *mtll_create();
 
@@ -78,5 +82,9 @@ extern void mtll_remove(struct mtll **, struct mtll *);
 extern void mtll_insert(struct mtll *, ssize_t, char *); 
 
 extern void mtll_delete(struct mtll *, ssize_t); 
+
+extern void mtll_view_nested(struct mtll **, struct mtll *, size_t);
+
+extern void nested_view(struct mtll *); 
 
 #endif

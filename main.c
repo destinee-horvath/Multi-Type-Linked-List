@@ -152,14 +152,28 @@ int main(int argc, char** argv) {
             }
             arguments = strtok(input + 12, "\n");  
 
-            if (checkArguments(input + 12, arguments, 1) != 0 || arguments == NULL) {
+            if (checkArguments(input + 12, arguments, 1) != 0 || arguments == NULL || input[13] == ' ') {
                 printInvalidCommand("VIEW-NESTED");
                 continue;
             }   
 
-            //code to view a nested list 
-            //if nested - need to print contents of nested list 
-            //else print list 
+            struct mtll *tmp = all_lists;
+            size_t count = 0;
+
+            //traverse to find list with id 
+            while (tmp != NULL) {    
+                if (tmp->id == atoi(arguments)) {
+                    mtll_view_nested(&all_lists, tmp, 0);
+                    break;
+                }
+                tmp = (tmp)->next;
+                count++;
+            }
+
+            if (count == size_lists) {
+                printInvalidCommand("VIEW-NESTED");
+            }
+            
         }
 
 
@@ -345,6 +359,10 @@ int main(int argc, char** argv) {
                 printInvalidCommand("DELETE");
             }
 
+        }
+
+        else if (strcmp(input, "\0") == 0) {
+            continue;
         }
 
         else if (strcmp(input, "\n") == 0) { //input blank 

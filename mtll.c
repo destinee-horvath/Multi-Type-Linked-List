@@ -54,6 +54,53 @@ size_t sizeList(struct Node *head) {
 }
 
 /**
+ * - takes integer out of curly brackets or convert it to int 
+ * Parameters: 
+ *      char * : str
+ * Returns: 
+ *      int    : id of nested list 
+*/
+size_t upwrap_nest(char *str) {
+    size_t len = strlen(str);
+    if (len >= 2 && str[0] == '{' && str[len - 1] == '}') {
+        memcpy(str, str + 1, len - 2);
+        str[len - 2] = '\0';
+        
+        if (checkType(str) == INT) {
+            return atoi(str);
+        }
+    }
+    else if (len == 1 && checkType(str) == INT) {
+        return atoi(str);
+    }
+    return -1;
+}
+
+/**
+ * Determines if a list exists - mainly used to determine if nested lists still exist 
+ * Parameters: 
+ *      struct mtll ** : lists
+ *      int            : list_id 
+ * Return:
+ *      int            : 0 if list doesnt exist 
+ *                     : 1 if list exists 
+*/
+size_t list_exists(struct mtll **lists, size_t list_id) {
+    struct mtll *current = *lists; 
+
+    while (current != NULL) {  
+        if (current->id == list_id) {
+            return 1;
+        }
+        current = current->next;
+
+    }
+
+    return 0; 
+
+}
+
+/**
  * Frees allocated memory for linked list
  * Parameters: 
  *      struct mtll * : list
@@ -445,6 +492,7 @@ void mtll_delete(struct mtll *list, ssize_t index) {
 
 /**
  * mtll_view : Prints all the elements in the specified linked list 
+ *           : Doesnt print contents of nested list 
  * Parameters: 
  *     struct mtll * : node
 */
@@ -489,9 +537,9 @@ void mtll_view(struct mtll *node) {
                 printf("%c", *((char *)current->data)); 
                 break;
 
-            default:
+            case REF:                
+                printf("{List %ld}", upwrap_nest((char *)current->data));
                 break;
-
             
         }
 
@@ -586,4 +634,188 @@ void mtll_view_all(struct mtll **lists, size_t num_lists) {
         //point to next pointer 
         tmp = &((*tmp)->next);                 
     }
+}
+
+/**
+ * mtll_view_nested  :  prints contents including nested list 
+ * Parameters:
+ *      struct mtll ** : lists
+ *      struct mtll *  : node         list with index user entered 
+*/
+void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
+    if (node == NULL) {
+        return;
+    }
+
+    struct Node *current = node->head;
+
+    if (current == NULL) {
+        printf("\n");
+        return;
+    }
+
+    
+
+    //not a nested list 
+    else if (node->type == LIST && recurse == 0) {
+        mtll_view(node);
+        return;
+    }
+
+    //nested list is within list 
+    else if (node->type == LIST && recurse > 0) {
+        nested_view(node);
+        return;
+    }
+
+    //find nested list
+    struct mtll *tmp = *lists; 
+    size_t count = 0;
+    size_t exists = 0;
+    
+
+    //iterate to check if nested list exists 
+    while (tmp != NULL) {
+
+        struct Node *current = tmp->head;
+
+        while (current != NULL) {
+
+            if (current->type == REF) { //type ref exists
+                count++;
+                if (list_exists(lists, tmp->id) == 1) {  //nested list exists
+                    exists++;
+                    break;
+                }
+            } 
+
+            current = current->next;
+        }
+
+        tmp = tmp->next;
+    }
+
+    //no nested list 
+    if (count == 0) {
+        mtll_view(node);
+        return;
+    }
+    
+    //case where a list was deleted 
+    else if (count != exists) { 
+        printInvalidCommand("VIEW-NESTED");
+        return;
+    }
+    
+    
+
+    //first node is whitespace char
+    if (current->type == CHAR && *((char *)current->data) == ' ') {
+        printf("  -> ");
+        current = current->next;
+    }
+
+    while (current != NULL) {
+        switch (current->type) {
+            case INT:
+                printf("%d", *((int *)current->data));
+                break;
+
+            case FLOAT:
+                printf("%.2f", *((float *)current->data));
+                break;
+
+            case STRING:
+                printf("%s", (char *)current->data);
+                break;
+
+            case CHAR:
+                //check if last node is whitespace
+                if (current->next == NULL && *((char *)current->data) == ' ') {
+                    break;
+                }
+                printf("%c", *((char *)current->data)); 
+                break;
+
+            case REF:      
+                printf("{"); 
+                mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
+                printf("}");
+                break;
+            
+        }
+
+        current = current->next;
+        if (current != NULL) {
+            printf(" ->");
+        }
+
+        if (current != NULL) {
+            printf(" ");
+        }
+
+    }
+
+    printf("\n");
+}
+
+
+void nested_view(struct mtll *node) {
+    if (node == NULL) {
+        return;
+    }
+
+    struct Node *current = node->head;
+    // printf("List %ld: ", node->id);
+
+    if (current == NULL) {
+        printf("\n");
+        return;
+    }
+
+    //first node is whitespace char
+    if (current->type == CHAR && *((char *)current->data) == ' ') {
+        printf("  -> ");
+        current = current->next;
+    }
+
+    while (current != NULL) {
+        switch (current->type) {
+            case INT:
+                printf("%d", *((int *)current->data));
+                break;
+
+            case FLOAT:
+                printf("%.2f", *((float *)current->data));
+                break;
+
+            case STRING:
+                printf("%s", (char *)current->data);
+                break;
+
+            case CHAR:
+                //check if last node is whitespace
+                if (current->next == NULL && *((char *)current->data) == ' ') {
+                    break;
+                }
+                printf("%c", *((char *)current->data)); 
+                break;
+
+            case REF:                
+                printf("{List %ld}", upwrap_nest((char *)current->data));
+                break;
+            
+        }
+
+        current = current->next;
+        if (current != NULL) {
+            printf(" ->");
+        }
+
+        if (current != NULL) {
+            printf(" ");
+        }
+
+    }
+
 }
