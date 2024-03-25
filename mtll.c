@@ -418,7 +418,6 @@ void mtll_delete(struct mtll *list, ssize_t index) {
 
     //set temporary pointers 
     struct Node *current = list->head;
-    size_t i = 0;
 
     for (size_t i = 0; i < index - 1; i++) {
         current = current->next;
