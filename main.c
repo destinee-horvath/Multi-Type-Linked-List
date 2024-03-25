@@ -324,7 +324,7 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            // if (atoi(input_list) < 0) {
+            if (atoi(input_list) < 0) {
                 printInvalidCommand("DELETE");
                 continue;
             }
