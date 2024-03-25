@@ -722,11 +722,11 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
     //iterate to check if nested list exists 
     while (tmp != NULL) {
 
-        struct Node *current = tmp->head;
+        struct Node *count_node = tmp->head;
 
-        while (current != NULL) {
+        while (count_node != NULL) {
 
-            if (current->type == REF) { //type ref exists
+            if (count_node->type == REF) { //type ref exists
                 count++;
                 if (list_exists(lists, tmp->id) == 1) {  //nested list exists
                     exists++;
@@ -734,7 +734,7 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
                 }
             } 
 
-            current = current->next;
+            count_node = count_node->next;
         }
 
         tmp = tmp->next;
