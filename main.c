@@ -281,27 +281,27 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            // if (atoi(input_list) < 0) {
-            //     printInvalidCommand("INSERT");
-            //     continue;
-            // }
+            if (atoi(input_list) < 0) {
+                printInvalidCommand("INSERT");
+                continue;
+            }
 
-            // struct mtll *tmp = all_lists;
-            // size_t count = 0;
+            struct mtll *tmp = all_lists;
+            size_t count = 0;
             
-            // //traverse to find list to insert element into 
-            // while (tmp != NULL) {    
-            //     if ((tmp)->id == atoi(arguments)) {
-            //         mtll_insert(tmp, atoi(input_pos), input_element);
-            //         break;
-            //     }
-            //     tmp = (tmp)->next;
-            //     count++;
-            // }
+            //traverse to find list to insert element into 
+            while (tmp != NULL) {    
+                if ((tmp)->id == atoi(arguments)) {
+                    mtll_insert(tmp, atoi(input_pos), input_element);
+                    break;
+                }
+                tmp = (tmp)->next;
+                count++;
+            }
 
-            // if (count == size_lists) {
-            //     printInvalidCommand("INSERT");
-            // }
+            if (count == size_lists) {
+                printInvalidCommand("INSERT");
+            }
 
 
 
