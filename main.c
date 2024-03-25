@@ -349,6 +349,7 @@ int main(int argc, char** argv) {
         }
 
         else if (strcmp(input, "\n") == 0) { //input blank 
+            printInvalidCommand("INPUT");
             continue;
         }
 
