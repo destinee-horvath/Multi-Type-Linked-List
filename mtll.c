@@ -712,46 +712,46 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
         current = current->next;
     }
 
-    // while (current != NULL) {
-    //     switch (current->type) {
-    //         case INT:
-    //             printf("%d", *((int *)current->data));
-    //             break;
+    while (current != NULL) {
+        switch (current->type) {
+            case INT:
+                printf("%d", *((int *)current->data));
+                break;
 
-    //         case FLOAT:
-    //             printf("%.2f", *((float *)current->data));
-    //             break;
+            case FLOAT:
+                printf("%.2f", *((float *)current->data));
+                break;
 
-    //         case STRING:
-    //             printf("%s", (char *)current->data);
-    //             break;
+            case STRING:
+                printf("%s", (char *)current->data);
+                break;
 
-    //         case CHAR:
-    //             //check if last node is whitespace
-    //             if (current->next == NULL && *((char *)current->data) == ' ') {
-    //                 break;
-    //             }
-    //             printf("%c", *((char *)current->data)); 
-    //             break;
+            case CHAR:
+                //check if last node is whitespace
+                if (current->next == NULL && *((char *)current->data) == ' ') {
+                    break;
+                }
+                printf("%c", *((char *)current->data)); 
+                break;
 
-    //         case REF:      
-    //             printf("{"); 
-    //             mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
-    //             printf("}");
-    //             break;
+            case REF:      
+                printf("{"); 
+                // mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
+                printf("}");
+                break;
             
-    //     }
+        }
 
-    //     current = current->next;
-    //     if (current != NULL) {
-    //         printf(" ->");
-    //     }
+        current = current->next;
+        if (current != NULL) {
+            printf(" ->");
+        }
 
-    //     if (current != NULL) {
-    //         printf(" ");
-    //     }
+        if (current != NULL) {
+            printf(" ");
+        }
 
-    // }
+    }
 
     printf("\n");
 }
