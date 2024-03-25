@@ -176,22 +176,22 @@ int main(int argc, char** argv) {
                 continue;
             }   
 
-            // struct mtll *tmp = all_lists;
-            // size_t count = 0;
+            struct mtll *tmp = all_lists;
+            size_t count = 0;
 
-            // //traverse to find list with input index 
-            // while (tmp != NULL) {    
-            //     if ((tmp)->id == atoi(arguments)) {
-            //         mtll_view((tmp));
-            //         break;
-            //     }
-            //     tmp = (tmp)->next;
-            //     count++;
-            // }
+            //traverse to find list with input index 
+            while (tmp != NULL) {    
+                if ((tmp)->id == atoi(arguments)) {
+                    mtll_view((tmp));
+                    break;
+                }
+                tmp = (tmp)->next;
+                count++;
+            }
 
-            // if (count == size_lists) {
-            //     printInvalidCommand("VIEW");
-            // }
+            if (count == size_lists) {
+                printInvalidCommand("VIEW");
+            }
         
         }
 
@@ -207,22 +207,22 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            // //traverse to find list with input index
-            // struct mtll *tmp = all_lists; 
-            // size_t count = 0;
+            //traverse to find list with input index
+            struct mtll *tmp = all_lists; 
+            size_t count = 0;
 
-            // while (tmp != NULL) {    
-            //     if (tmp->id == atoi(arguments)) {
-            //         mtll_type(tmp);
-            //         break;
-            //     }
-            //     tmp = tmp->next;
-            //     count++;
-            // }
+            while (tmp != NULL) {    
+                if (tmp->id == atoi(arguments)) {
+                    mtll_type(tmp);
+                    break;
+                }
+                tmp = tmp->next;
+                count++;
+            }
 
-            // if (count == size_lists) {
-            //     printInvalidCommand("TYPE");
-            // }
+            if (count == size_lists) {
+                printInvalidCommand("TYPE");
+            }
 
         }
             
