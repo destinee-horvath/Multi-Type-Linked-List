@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
             size_lists++;
             index_lists++;
             
-            
+            memset(input, 0, sizeof(input)); //clear buffer
         }   
 
         else if (strncmp(input, "VIEW ALL", 8) == 0 || strncmp(input, "VIEW ALL ", 9) == 0) { 
@@ -291,21 +291,20 @@ int main(int argc, char** argv) {
             
             //traverse to find list to insert element into 
             while (tmp != NULL) {    
-                if ((tmp)->id == atoi(arguments)) {
+                if (tmp->id == atoi(arguments)) {
+                    printf("**");
                     mtll_insert(tmp, atoi(input_pos), input_element);
                     break;
                 }
-                tmp = (tmp)->next;
+                tmp = tmp->next;
                 count++;
             }
 
             if (count == size_lists) {
                 printInvalidCommand("INSERT");
             }
-
-
-
         }   
+
         else if (strncmp(input, "DELETE ", 7) == 0) {
             if (input[7] == ' ' || input[7] == '\n' || input[7] == '\0') {
                 printInvalidCommand("DELETE");
@@ -350,7 +349,6 @@ int main(int argc, char** argv) {
         }
 
         else if (strcmp(input, "\n") == 0) { //input blank 
-            printInvalidCommand("INPUT");
             continue;
         }
 

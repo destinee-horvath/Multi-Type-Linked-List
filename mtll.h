@@ -58,6 +58,8 @@ extern void printInvalidCommand(char *);
 
 enum DataType checkType(char *); 
 
+extern size_t sizeList(struct Node *);
+
 //Logic functions 
 extern struct mtll *mtll_create();
 
