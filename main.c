@@ -271,7 +271,7 @@ int main(int argc, char** argv) {
             //seperate arguments 
             char *input_list = strtok(arguments, " ");
             char *input_pos = strtok(NULL, " ");
-            //char *input_element = strtok(NULL, ""); //if empty set as single whitespace character
+            char *input_element = strtok(NULL, ""); //if empty set as single whitespace character
 
             if (arguments == NULL || 
                 input_list == NULL || checkType(input_list) != INT ||
