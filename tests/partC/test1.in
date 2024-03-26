@@ -4,12 +4,13 @@ NEW 4
 3
 4
 NEW 3
-Numbers:
+Numbers
 {0}
 end
 VIEW 0
 TYPE 0
 VIEW 1
 TYPE 1
+VIEW ALL
 VIEW-NESTED 0
 VIEW-NESTED 1

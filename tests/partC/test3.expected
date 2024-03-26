@@ -1,0 +1,19 @@
+List 0: a -> list
+List 1: brr -> its -> cold
+Number of lists: 2
+List 0
+List 1
+Nested 0: a -> {List 1} -> list
+List 2: a new list
+List 3: rah -> beep -> blop
+INVALID COMMAND: INSERT
+List 2: 
+Number of lists: 4
+Nested 0
+List 1
+List 2
+List 3
+a -> {brr -> its -> cold} -> list
+brr -> its -> cold
+
+rah -> beep -> blop

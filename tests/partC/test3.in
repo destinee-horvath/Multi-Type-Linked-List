@@ -1,0 +1,22 @@
+NEW 2
+a
+list
+NEW 3
+brr
+its
+cold
+VIEW ALL
+INSERT 0 1 {1}
+NEW 1
+a new list
+NEW 3
+rah
+beep
+blop
+INSERT 2 0 {0}
+DELETE 2 0
+VIEW ALL
+VIEW-NESTED 0
+VIEW-NESTED 1
+VIEW-NESTED 2
+VIEW-NESTED 3

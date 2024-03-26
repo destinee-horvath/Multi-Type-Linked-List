@@ -1,3 +1,14 @@
-List 0: up -> down -> front -> back
-List 1: left -> right
-Nested 0: up -> down -> {List 0} -> front -> back
+List 0: b -> c -> d
+List 1: 1 -> 2 -> 3
+Nested 2: start -> {List 0} -> {List 1} -> end
+Number of lists: 3
+List 0
+List 1
+Nested 2
+b -> c -> d
+1 -> 2 -> 3
+start -> {List 0} -> {List 1} -> end
+start -> {b -> c -> d} -> {1 -> 2 -> 3} -> end
+char -> char -> char
+int -> int -> int
+string -> reference -> reference -> string
