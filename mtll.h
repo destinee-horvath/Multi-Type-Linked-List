@@ -9,6 +9,7 @@
 #include <errno.h>
 
 #define MAX_INPUT 128
+#define BUFFER 256
 
 enum DataType {
     INT,

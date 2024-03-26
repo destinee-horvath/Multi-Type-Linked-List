@@ -173,7 +173,7 @@ struct mtll *mtll_create() {
  *      - size_t        : size 
 */
 void make_list(struct mtll *node_head, size_t size) {
-    char input[MAX_INPUT];
+    char input[BUFFER];
     struct Node *current = node_head->head;
 
     //initialise input buffer
@@ -201,8 +201,8 @@ void make_list(struct mtll *node_head, size_t size) {
         input[strcspn(input, "\n")] = '\0'; 
 
         //need to clear buffer to prevent exceeding characters from being read again 
-        if (strlen(input) >= MAX_INPUT && input[MAX_INPUT - 1] != '\n') {
-            input[MAX_INPUT - 1] = '\n';
+        if (strlen(input) >= BUFFER && input[BUFFER - 1] != '\n') {
+            input[BUFFER - 1] = '\n';
 
             int c;
             while ((c = getchar()) != '\n' && c != EOF);
@@ -284,8 +284,8 @@ void make_list(struct mtll *node_head, size_t size) {
     }
     
     //clear buffer 
-    if (strlen(input) >= MAX_INPUT && input[MAX_INPUT - 1] != '\n') {
-        input[MAX_INPUT - 1] = '\n';
+    if (strlen(input) >= BUFFER && input[BUFFER - 1] != '\n') {
+        input[BUFFER - 1] = '\n';
 
         int c;
         while ((c = getchar()) != '\n' && c != EOF);
