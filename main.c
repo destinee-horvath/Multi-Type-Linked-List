@@ -113,6 +113,10 @@ int main(int argc, char** argv) {
                 current_list->next = new_list;
             }
 
+            if (feof(stdin)) { 
+                break; 
+            }
+
             //to print results 
             switch(new_list->type) {
                 case LIST:

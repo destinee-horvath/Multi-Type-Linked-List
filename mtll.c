@@ -185,6 +185,10 @@ void make_list(struct mtll *node_head, size_t size) {
     while (i < size) {
         //user didn't enter anything
         if (fgets(input, sizeof(input), stdin) == NULL) { 
+            //if end of file 
+            if (feof(stdin)) { 
+                return; 
+            }
             strcpy(input, " ");
         }
         
@@ -358,7 +362,7 @@ size_t mtll_remove(struct mtll **lists, struct mtll *to_remove) {
 void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     //if value is null, set it to whitespace
     if (value == NULL) {
-        value = " ";
+        value = "\n";
     }
 
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
@@ -394,8 +398,8 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
                 return;
             }
 
-            //inserted nested list 
-            if (upwrap_nest(value) != -1) {
+            //inserted nested list (cannot nest itself)
+            if (upwrap_nest(value) != -1 && list->id != upwrap_nest(value)) {
                 list->type = NESTED;
                 new_node->type = REF;
             }
@@ -618,12 +622,18 @@ void mtll_view(struct mtll *node) {
                 break;
 
             case STRING:
+                if (*((char *)current->data) == '\n') {
+                    break;
+                }
                 printf("%s", (char *)current->data);
                 break;
 
             case CHAR:
                 //check if last node is whitespace
                 if (current->next == NULL && *((char *)current->data) == ' ') {
+                    break;
+                }
+                else if (*((char *)current->data) == '\n') {
                     break;
                 }
                 printf("%c", *((char *)current->data)); 
