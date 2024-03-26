@@ -70,7 +70,7 @@ size_t list_exists(struct mtll **, size_t);
 //Logic functions 
 extern struct mtll *mtll_create();
 
-extern void make_list(struct mtll *, size_t); 
+extern size_t make_list(struct mtll **, struct mtll *, size_t); 
 
 extern void mtll_free(struct mtll *);
 

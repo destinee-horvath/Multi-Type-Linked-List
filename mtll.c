@@ -76,7 +76,11 @@ size_t size_all_lists(struct mtll **lists) {
  *      int    : id of nested list 
 */
 size_t upwrap_nest(char *str) {
+    if (str == NULL) {
+        return -1;
+    }
     size_t len = strlen(str);
+
     if (len >= 2 && str[0] == '{' && str[len - 1] == '}') {
         memmove(str, str + 1, len - 1);
         str[len - 2] = '\0';
@@ -171,8 +175,11 @@ struct mtll *mtll_create() {
  * Parameters: 
  *      - struct mtll * : head
  *      - size_t        : size 
+ * Returns
+ *      - size_t        : 0 is successfully created list 
+ *                        1 if no list created 
 */
-void make_list(struct mtll *node_head, size_t size) {
+size_t make_list(struct mtll **all_lists, struct mtll *node_head, size_t size) {
     char input[BUFFER];
     struct Node *current = node_head->head;
 
@@ -187,7 +194,7 @@ void make_list(struct mtll *node_head, size_t size) {
         if (fgets(input, sizeof(input), stdin) == NULL) { 
             //if end of file 
             if (feof(stdin)) { 
-                return; 
+                return 1; 
             }
             strcpy(input, " ");
         }
@@ -228,9 +235,17 @@ void make_list(struct mtll *node_head, size_t size) {
             
             //check if insides are int 
             if (checkType(copy_input) == INT) {
+                //if list doesnt exist 
+                if (list_exists(all_lists, atoi(copy_input)) == 0) {
+                    printInvalidCommand("NEW");
+                    free(new_node);
+                    return 1;
+                }
                 node_head->type = NESTED;
                 new_node->type = REF;
             }
+
+            
         }
         ///
 
@@ -291,6 +306,8 @@ void make_list(struct mtll *node_head, size_t size) {
         while ((c = getchar()) != '\n' && c != EOF);
     }
     memset(input, 0, sizeof(input));
+
+    return 0;
 }
 
 /**
@@ -404,6 +421,13 @@ void mtll_insert(struct mtll **all_lists, struct mtll *list, ssize_t index, char
         }
 
         free(value_copy);
+
+        //nested list doesnt exists 
+        if (list_exists(all_lists, upwrap_nest(value)) == 0) {
+            printInvalidCommand("INSERT");
+            free(new_node);
+            return;
+        }
     }
 
 

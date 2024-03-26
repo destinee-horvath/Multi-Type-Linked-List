@@ -95,7 +95,12 @@ int main(int argc, char** argv) {
             new_list->id = index_lists;
 
             //make new list
-            make_list(new_list, atoi(arguments));
+            size_t status = make_list(&all_lists, new_list, atoi(arguments));
+
+            if (status == 1) {
+                mtll_free(new_list);
+                break;
+            }
 
             //if there are no heads in all_lists, new_node must be the first head 
             if (all_lists == NULL) {
