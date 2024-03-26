@@ -92,7 +92,7 @@ size_t upwrap_nest(char *str) {
 }
 
 /**
- * Determines if a list exists - mainly used to determine if nested lists still exist 
+ * Determines if a list exists by id
  * Parameters: 
  *      struct mtll ** : lists
  *      int            : list_id 
@@ -359,7 +359,7 @@ size_t mtll_remove(struct mtll **lists, struct mtll *to_remove) {
  *      - size_t       : index 
  *      - void *       : value
 */
-void mtll_insert(struct mtll *list, ssize_t index, char *value) {
+void mtll_insert(struct mtll **all_lists, struct mtll *list, ssize_t index, char *value) {
     //if value is null, set it to whitespace
     if (value == NULL) {
         value = "\n";
@@ -380,11 +380,30 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
             free(new_node);
             return;
         }
+
+        //if nested list entered is of type nested list 
         if (list->type == NESTED) {
             printInvalidCommand("INSERT");
             free(new_node);
             return;
         }
+
+        //if entered list is a nested list 
+        struct mtll *check_nest = *all_lists;
+        char *value_copy = strdup(value); 
+
+        while (check_nest != NULL) {  
+            // printf("%ld %ld \n", check_nest->id, upwrap_nest(value));
+            if (check_nest->id == upwrap_nest(value_copy) && check_nest->type == NESTED) {
+                printInvalidCommand("INSERT");
+                free(value_copy); 
+                free(new_node);
+                return;
+            }
+            check_nest = check_nest->next;
+        }
+
+        free(value_copy);
     }
 
 
@@ -414,7 +433,7 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
                 return;
             }
 
-            //inserted nested list (cannot nest itself)
+            //inserted nested list 
             if (upwrap_nest(value) != -1 && list->id != upwrap_nest(value)) {
                 list->type = NESTED;
                 new_node->type = REF;
