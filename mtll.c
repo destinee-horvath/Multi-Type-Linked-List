@@ -74,6 +74,7 @@ size_t size_all_lists(struct mtll **lists) {
  *      char * : str
  * Returns: 
  *      int    : id of nested list 
+ *             : -1 if not nested
 */
 size_t upwrap_nest(char *str) {
     size_t len = strlen(str);
@@ -362,12 +363,29 @@ size_t mtll_remove(struct mtll **lists, struct mtll *to_remove) {
 void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     //if value is null, set it to whitespace
     if (value == NULL) {
-        value = "\n";
+        value = "";
     }
 
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
     if (new_node == NULL) {
         printInvalidCommand("INSERT");
+        return;
+    }
+
+    struct Node *check = list->head;
+
+
+    //cannot insert reference into an empty list 
+    if (check == NULL && upwrap_nest(value) != -1) {
+        printInvalidCommand("INSERT");
+        free(new_node);
+        return;
+    }
+
+    //cannot insert reference into a nested list
+    if (list->type == NESTED && upwrap_nest(value) != -1) {
+        printInvalidCommand("INSERT");
+        free(new_node);
         return;
     }
 
@@ -403,6 +421,8 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
                 list->type = NESTED;
                 new_node->type = REF;
             }
+
+            //nested list cannot nest a nested list (only lists of type list)
 
             new_node->data = new_node->type_string;
             if (strlen(value) + 12 >= MAX_INPUT) {
