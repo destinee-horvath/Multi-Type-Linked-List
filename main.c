@@ -74,8 +74,7 @@ int main(int argc, char** argv) {
     struct mtll *all_lists = NULL; //store mtll lists
 
     size_t index_lists = 0;
-    size_t size_lists = 0;
-
+    
     while (fgets(input, sizeof(input), stdin) != NULL) {  
         if (strncmp(input, "NEW ", 4) == 0) { 
             if (input[4] == ' ' || input[4] == '\n' || input[4] == '\0') {   //checks if there is something after whitespace to prevent core dump
@@ -128,7 +127,6 @@ int main(int argc, char** argv) {
             mtll_view(new_list);
 
             //increment sizes
-            size_lists++;
             index_lists++;
             
             memset(input, 0, sizeof(input)); //clear buffer
@@ -142,7 +140,7 @@ int main(int argc, char** argv) {
                 continue;
             } 
 
-            mtll_view_all(&all_lists, size_lists);
+            mtll_view_all(&all_lists, size_all_lists(&all_lists));
         }
 
         else if (strncmp(input, "VIEW-NESTED ", 12) == 0) { 
@@ -170,7 +168,7 @@ int main(int argc, char** argv) {
                 count++;
             }
 
-            if (count == size_lists) {
+            if (count == size_all_lists(&all_lists)) {
                 printInvalidCommand("VIEW-NESTED");
             }
             
@@ -203,7 +201,7 @@ int main(int argc, char** argv) {
                 count++;
             }
 
-            if (count == size_lists) {
+            if (count == size_all_lists(&all_lists)) {
                 printInvalidCommand("VIEW");
             }
         
@@ -234,7 +232,7 @@ int main(int argc, char** argv) {
                 count++;
             }
 
-            if (count == size_lists) {
+            if (count == size_all_lists(&all_lists)) {
                 printInvalidCommand("TYPE");
             }
 
@@ -265,8 +263,7 @@ int main(int argc, char** argv) {
             if (to_remove != NULL) {
                 mtll_remove(&all_lists, to_remove);
                 printf("\n");
-                size_all_lists(&all_lists);
-                mtll_view_all(&all_lists, size_lists);
+                mtll_view_all(&all_lists, size_all_lists(&all_lists));
                 continue;
             }
             else {
@@ -313,7 +310,7 @@ int main(int argc, char** argv) {
                 count++;
             }
 
-            if (count == size_lists) {
+            if (count == size_all_lists(&all_lists)) {
                 printInvalidCommand("INSERT");
             }
         }   
@@ -355,7 +352,7 @@ int main(int argc, char** argv) {
                 count++;
             }
 
-            if (count == size_lists) {
+            if (count == size_all_lists(&all_lists)) {
                 printInvalidCommand("DELETE");
             }
 
