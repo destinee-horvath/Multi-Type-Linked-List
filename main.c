@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
 
             if (status == 1) {
                 mtll_free(new_list);
-                break;
+                continue;
             }
 
             //if there are no heads in all_lists, new_node must be the first head 
