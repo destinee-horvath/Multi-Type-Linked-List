@@ -63,14 +63,14 @@ size_t sizeList(struct Node *head) {
 size_t upwrap_nest(char *str) {
     size_t len = strlen(str);
     if (len >= 2 && str[0] == '{' && str[len - 1] == '}') {
-        memcpy(str, str + 1, len - 2);
+        memmove(str, str + 1, len - 1);
         str[len - 2] = '\0';
         
         if (checkType(str) == INT) {
             return atoi(str);
         }
     }
-    else if (len == 1 && checkType(str) == INT) {
+    else if (checkType(str) == INT) {
         return atoi(str);
     }
     return -1;
@@ -197,8 +197,20 @@ void make_list(struct mtll *node_head, size_t size) {
 
         //case for nested lists
         if (input[0] == '{' && input[strlen(input) - 1] == '}') {
-            node_head->type = NESTED;
-            new_node->type = REF;
+            char copy_input[sizeof(input)];
+            strcpy(copy_input, input);
+
+            //remove brackets
+            for (int i = 0; i < strlen(input) - 2; i++) {
+                copy_input[i] = copy_input[i + 1];
+            }
+            copy_input[strlen(input) - 2] = '\0';
+            
+            //check if insides are int 
+            if (checkType(copy_input) == INT) {
+                node_head->type = NESTED;
+                new_node->type = REF;
+            }
         }
         ///
 
@@ -784,7 +796,9 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
             case REF:      
                 printf("{"); 
                 //nested_view(lists[upwrap_nest((char *)current->data)]);
-                mtll_view_nested(lists, lists[upwrap_nest((char *)current->data)], ++recurse); //recursive
+                struct mtll *nested_list = nested_view_id(lists, upwrap_nest((char *)current->data));
+                
+                mtll_view_nested(lists, nested_list, ++recurse); //recursive
                 printf("}");
                 break;
             
@@ -872,26 +886,25 @@ void nested_view(struct mtll *node) {
 }
 
 /**
- * - Find list by id then print 
+ * - Find head node with id 
  * Parameters:
  *      struct mtll ** : lists
  *      size_ t        : id_lists 
 */
-void nested_view_id(struct mtll **lists, size_t id_list) {
+struct mtll *nested_view_id(struct mtll **lists, size_t id_list) {
     struct mtll *current_list = *lists;
 
     //find list with id
     while (current_list != NULL) {
         if (current_list->id == id_list) {
 
-            //print nested list 
-            nested_view(current_list);
-            return;
+            return current_list;
+
         }
 
         current_list = current_list->next;
     }
 
-    printf("List not found\n");
+    return NULL; //list not found 
 
 }
