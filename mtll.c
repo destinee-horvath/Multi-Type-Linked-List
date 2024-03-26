@@ -39,7 +39,7 @@ enum DataType checkType(char *input) {
  * Parameters:
  *      - struct Node * : head
  * Returns: 
- *      - int           : size
+ *      - size          : int
 */
 size_t sizeList(struct Node *head) {
     size_t size = 0;
@@ -74,7 +74,6 @@ size_t size_all_lists(struct mtll **lists) {
  *      char * : str
  * Returns: 
  *      int    : id of nested list 
- *             : -1 if not nested
 */
 size_t upwrap_nest(char *str) {
     size_t len = strlen(str);
@@ -363,24 +362,13 @@ size_t mtll_remove(struct mtll **lists, struct mtll *to_remove) {
 void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     //if value is null, set it to whitespace
     if (value == NULL) {
-        value = "";
+        value = "\n";
     }
 
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
     if (new_node == NULL) {
         printInvalidCommand("INSERT");
         return;
-    }
-    
-    struct Node *check = list->head;
-
-    //cannot insert nested list into nested list
-    if (strlen(value) >= 2 && value[0] == '{' && value[strlen(value) - 1] == '}') {
-        if (check == NULL && upwrap_nest(value) != -1) {
-            printInvalidCommand("INSERT");
-            free(new_node);
-            return;
-        }
     }
 
 
@@ -414,25 +402,6 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
             if (upwrap_nest(value) != -1 && list->id != upwrap_nest(value)) {
                 list->type = NESTED;
                 new_node->type = REF;
-            }
-
-            //nested list cannot nest a nested list (only lists of type list)
-            //case inserting nested into nested
-            if (strlen(value) >= 2 && value[0] == '{' && value[strlen(value) - 1] == '}') {
-                //cannot insert reference into an empty list 
-
-                if (check == NULL && upwrap_nest(value) != -1) {
-                    printInvalidCommand("INSERT");
-                    free(new_node);
-                    return;
-                }
-
-                //cannot insert reference into a nested list
-                if (list->type == NESTED && new_node->type == REF) {
-                    printInvalidCommand("INSERT");
-                    free(new_node);
-                    return;
-                }
             }
 
             new_node->data = new_node->type_string;
