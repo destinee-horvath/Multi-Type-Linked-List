@@ -39,7 +39,7 @@ enum DataType checkType(char *input) {
  * Parameters:
  *      - struct Node * : head
  * Returns: 
- *      - size          : int
+ *      - int           : size
 */
 size_t sizeList(struct Node *head) {
     size_t size = 0;
@@ -371,22 +371,16 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
         printInvalidCommand("INSERT");
         return;
     }
-
+    
     struct Node *check = list->head;
 
-
-    //cannot insert reference into an empty list 
-    if (check == NULL && upwrap_nest(value) != -1) {
-        printInvalidCommand("INSERT");
-        free(new_node);
-        return;
-    }
-
-    //cannot insert reference into a nested list
-    if (list->type == NESTED && upwrap_nest(value) != -1) {
-        printInvalidCommand("INSERT");
-        free(new_node);
-        return;
+    //cannot insert nested list into nested list
+    if (strlen(value) >= 2 && value[0] == '{' && value[strlen(value) - 1] == '}') {
+        if (check == NULL && upwrap_nest(value) != -1) {
+            printInvalidCommand("INSERT");
+            free(new_node);
+            return;
+        }
     }
 
 
@@ -423,6 +417,23 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
             }
 
             //nested list cannot nest a nested list (only lists of type list)
+            //case inserting nested into nested
+            if (strlen(value) >= 2 && value[0] == '{' && value[strlen(value) - 1] == '}') {
+                //cannot insert reference into an empty list 
+
+                if (check == NULL && upwrap_nest(value) != -1) {
+                    printInvalidCommand("INSERT");
+                    free(new_node);
+                    return;
+                }
+
+                //cannot insert reference into a nested list
+                if (list->type == NESTED && new_node->type == REF) {
+                    printInvalidCommand("INSERT");
+                    free(new_node);
+                    return;
+                }
+            }
 
             new_node->data = new_node->type_string;
             if (strlen(value) + 12 >= MAX_INPUT) {

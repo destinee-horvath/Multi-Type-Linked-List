@@ -312,7 +312,21 @@ int main(int argc, char** argv) {
             //traverse to find list to insert element into 
             while (tmp != NULL) {    
                 if (tmp->id == atoi(arguments)) {
-                    mtll_insert(tmp, atoi(input_pos), input_element);
+
+                    //if nested list input
+                    if (strlen(input_element) >= 2 && input_element[0] == '{' && 
+                            input_element[strlen(input_element) - 1] == '}') {
+
+                        //cannot insert nested list of itself 
+                        if (tmp->id == upwrap_nest(input_element)) {
+                            printInvalidCommand("INSERT");
+                        }
+                    }
+                    
+                    else {
+                        mtll_insert(tmp, atoi(input_pos), input_element);
+                    }
+
                     break;
                 }
                 tmp = tmp->next;
@@ -321,6 +335,7 @@ int main(int argc, char** argv) {
 
             if (count == size_all_lists(&all_lists)) {
                 printInvalidCommand("INSERT");
+                continue;
             }
         }   
 
