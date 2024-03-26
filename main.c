@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
     struct mtll *all_lists = NULL; //store mtll lists
 
     size_t index_lists = 0;
-    
+
     while (fgets(input, sizeof(input), stdin) != NULL) {  
         if (strncmp(input, "NEW ", 4) == 0) { 
             if (input[4] == ' ' || input[4] == '\n' || input[4] == '\0') {   //checks if there is something after whitespace to prevent core dump
@@ -261,9 +261,14 @@ int main(int argc, char** argv) {
             
             //if the list exists remove 
             if (to_remove != NULL) {
-                mtll_remove(&all_lists, to_remove);
-                printf("\n");
-                mtll_view_all(&all_lists, size_all_lists(&all_lists));
+                size_t tmp = mtll_remove(&all_lists, to_remove);
+                
+                //removed successfully 
+                if (tmp == 0) { 
+                    printf("\n");
+                    mtll_view_all(&all_lists, size_all_lists(&all_lists));
+                }
+                
                 continue;
             }
             else {

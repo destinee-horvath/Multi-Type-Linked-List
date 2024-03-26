@@ -296,10 +296,10 @@ void make_list(struct mtll *node_head, size_t size) {
  *      size_t         : num_lists
  *      struct mtll *  : to_remove    //list to remove 
 */
-void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
+size_t mtll_remove(struct mtll **lists, struct mtll *to_remove) {
     if (to_remove == NULL || *lists == NULL || lists == NULL) { 
         printInvalidCommand("REMOVE");
-        return;
+        return 1;
     }
 
     //check if it exists in a nested list 
@@ -310,7 +310,7 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
         while (check_node != NULL) {
             if (check_node->type == REF && upwrap_nest((char *)check_node->data) == to_remove->id) {
                 printInvalidCommand("REMOVE");
-                return;
+                return 1;
             }
             check_node = check_node->next;
         }
@@ -328,7 +328,7 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
 
     //no node found 
     if (curr == NULL) {  
-        return;
+        return 1;
     }
 
     //link previous node to next node (skip curr)
@@ -343,6 +343,7 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
 
     mtll_free(to_remove);
 
+    return 0;
 }
 
 

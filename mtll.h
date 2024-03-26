@@ -79,7 +79,7 @@ extern void mtll_type(struct mtll *);
 
 extern void mtll_view_all(struct mtll **, size_t);
 
-extern void mtll_remove(struct mtll **, struct mtll *);
+extern size_t mtll_remove(struct mtll **, struct mtll *);
 
 extern void mtll_insert(struct mtll *, ssize_t, char *); 
 
