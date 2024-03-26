@@ -380,6 +380,11 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
             free(new_node);
             return;
         }
+        if (list->type == NESTED) {
+            printInvalidCommand("INSERT");
+            free(new_node);
+            return;
+        }
     }
 
 
