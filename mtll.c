@@ -366,9 +366,20 @@ void mtll_insert(struct mtll *list, ssize_t index, char *value) {
     }
 
     struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    
     if (new_node == NULL) {
         printInvalidCommand("INSERT");
         return;
+    }
+
+
+    //case nested entered
+    if (strlen(value) >= 2 && value[0] == '{' && value[strlen(value) - 1] == '}') {
+        if (list->head == NULL) {
+            printInvalidCommand("INSERT");
+            free(new_node);
+            return;
+        }
     }
 
 
