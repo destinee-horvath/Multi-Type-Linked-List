@@ -265,7 +265,7 @@ int main(int argc, char** argv) {
             if (to_remove != NULL) {
                 mtll_remove(&all_lists, to_remove);
                 printf("\n");
-                size_lists--;
+                size_all_lists(&all_lists);
                 mtll_view_all(&all_lists, size_lists);
                 continue;
             }

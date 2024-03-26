@@ -54,6 +54,21 @@ size_t sizeList(struct Node *head) {
 }
 
 /**
+ * 
+*/
+size_t size_all_lists(struct mtll **lists) {
+    size_t size = 0;
+    struct mtll *current_list = *lists;
+
+    while (current_list != NULL) {
+        size++;
+        current_list = current_list->next;
+    }
+
+    return size;
+}
+
+/**
  * - takes integer out of curly brackets or convert it to int 
  * Parameters: 
  *      char * : str
@@ -99,6 +114,7 @@ size_t list_exists(struct mtll **lists, size_t list_id) {
     return 0; 
 
 }
+
 
 /**
  * Frees allocated memory for linked list
@@ -286,10 +302,26 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
         return;
     }
 
+    //check if it exists in a nested list 
+    struct mtll *tmp = *lists; 
+
+    while (tmp != NULL) {  
+        struct Node *check_node = tmp->head;
+        while (check_node != NULL) {
+            if (check_node->type == REF && upwrap_nest((char *)check_node->data) == to_remove->id) {
+                printInvalidCommand("REMOVE");
+                return;
+            }
+            check_node = check_node->next;
+        }
+        tmp = tmp->next;
+
+    }
+
     struct mtll *curr = *lists;
     struct mtll *prev = NULL;
 
-    while (curr != NULL && curr != to_remove) {
+    while (curr != NULL && curr != to_remove) { 
         prev = curr;
         curr = curr->next;
     }
@@ -312,6 +344,8 @@ void mtll_remove(struct mtll **lists, struct mtll *to_remove) {
     mtll_free(to_remove);
 
 }
+
+
 
 /**
  * mtll_insert : Inserts an element into a linked list 
@@ -890,6 +924,8 @@ void nested_view(struct mtll *node) {
  * Parameters:
  *      struct mtll ** : lists
  *      size_ t        : id_lists 
+ * Returns 
+ *      struct mtll *  : node with id 
 */
 struct mtll *nested_view_id(struct mtll **lists, size_t id_list) {
     struct mtll *current_list = *lists;

@@ -60,6 +60,8 @@ enum DataType checkType(char *);
 
 extern size_t sizeList(struct Node *);
 
+extern size_t size_all_lists(struct mtll **);
+
 size_t upwrap_nest(char *);
 
 size_t list_exists(struct mtll **, size_t);
