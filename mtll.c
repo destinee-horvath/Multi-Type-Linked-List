@@ -420,14 +420,14 @@ void mtll_insert(struct mtll **all_lists, struct mtll *list, ssize_t index, char
             check_nest = check_nest->next;
         }
 
-        free(value_copy);
-
         //nested list doesnt exists 
-        if (list_exists(all_lists, upwrap_nest(value)) == 0) {
+        if (list_exists(all_lists, upwrap_nest(value_copy)) == 0) {
             printInvalidCommand("INSERT");
             free(new_node);
             return;
         }
+
+        free(value_copy);
     }
 
 
@@ -458,7 +458,7 @@ void mtll_insert(struct mtll **all_lists, struct mtll *list, ssize_t index, char
             }
 
             //inserted nested list 
-            if (upwrap_nest(value) != -1 && list->id != upwrap_nest(value)) {
+            if (upwrap_nest(value) != -1) {
                 list->type = NESTED;
                 new_node->type = REF;
             }
