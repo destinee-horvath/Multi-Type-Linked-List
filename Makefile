@@ -12,7 +12,7 @@ $(TARGET): $(OBJS)
 	$(CC) -c $(FLAGS) $< -o $@
 
 build:
-	gcc -o mtll main.c mtll.c
+	${CC} ${FLAGS} -o ${TARGET} main.c mtll.c
 
 tests: $(TARGET)
 	echo "Make my tests!"
