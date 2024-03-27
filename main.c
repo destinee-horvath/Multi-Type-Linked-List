@@ -31,7 +31,6 @@ int checkArguments(char *command, char *argument, int num_args) {
     else if (num_args == 3) { //INSERT, DELETE : expects at least 2 integer arguments 
         char *arg1 = strtok(argument, " ");
         char *arg2 = strtok(NULL, " ");
-        // char *arg3 = strtok(NULL, " ");
 
         if (arg1 == NULL || arg2 == NULL) { //no arguments
             return 1;
@@ -171,6 +170,7 @@ int main(int argc, char** argv) {
             while (tmp != NULL) {    
                 if (tmp->id == atoi(arguments)) {
                     mtll_view_nested(&all_lists, tmp, 0);
+                    printf("\n");
                     break;
                 }
                 tmp = (tmp)->next;
@@ -204,6 +204,7 @@ int main(int argc, char** argv) {
             while (tmp != NULL) {    
                 if ((tmp)->id == atoi(arguments)) {
                     mtll_view((tmp));
+                    
                     break;
                 }
                 tmp = (tmp)->next;

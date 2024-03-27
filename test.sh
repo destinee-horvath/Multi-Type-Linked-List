@@ -1,5 +1,51 @@
 #!/bin/bash
 
+
+## TEST COMMAND INPUTS ####################
+dir="tests/inputCommands"
+out_dir="out_tests"
+
+if [ ! -d "$dir" ]; then
+    echo "Error: Directory '$dir' not found."
+    exit 1
+fi
+
+mkdir -p "$out_dir"
+
+echo ""
+echo ""
+echo "TEST COMMAND INPUTS:"
+
+X=1
+for file in "$dir"/*.in; do
+    echo "-------------------- Test $X --------------------"
+
+    filename=$(basename "$file")  #filename without path 
+    out_file="$out_dir/out_${filename%.in}.out"
+
+    touch "$out_file"
+
+    expected_file="${file%.in}.expected"
+
+    ./mtll < "$file" > "$out_file"
+
+    if diff "$out_file" "$expected_file" >/dev/null; then
+        echo "Passed: $filename"
+    else
+        echo "Failed: $filename"
+        echo "-- Expected output --"
+        cat "$expected_file"
+        echo ""
+        echo "-- Actual output --"
+        cat "$out_file"
+    fi
+
+    ((X++))
+
+done  
+
+
+## TEST A ####################
 dir="tests/partA"
 out_dir="out_tests"
 

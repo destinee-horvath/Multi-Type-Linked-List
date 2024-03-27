@@ -11,17 +11,24 @@ $(TARGET): $(OBJS)
 %.o: %.c
 	$(CC) -c $(FLAGS) $< -o $@
 
+build:
+	gcc -o mtll main.c mtll.c
+
 tests: $(TARGET)
 	echo "Make my tests!"
 	chmod u+x test.sh
 
 gdb:
-	$(CC) $(FLAGS) -o -g *.c
+	$(CC) $(FLAGS) -o -g -ggdb *.c
 	gdb ./*
 
 asan:
 	clang -fsanitize=address -g -o mtll main.c mtll.c
 	./mtll
+
+valgrind: 
+	$(CC) $(FLAGS) -o -g *.c
+	valgrind --tool=memcheck ./mtll
 
 .PHONY:
 run_tests: tests

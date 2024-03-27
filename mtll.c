@@ -27,7 +27,7 @@ enum DataType checkType(char *input) {
         return FLOAT; 
     }
 
-    if (strlen(input) == 1 && isprint(input[0])) { // || strcmp(input, "\t") == 0 
+    if (strlen(input) == 1 && isprint(input[0])) { 
         return CHAR; 
     }
 
@@ -175,7 +175,7 @@ struct mtll *mtll_create() {
  * Parameters: 
  *      - struct mtll * : head
  *      - size_t        : size 
- * Returns
+ * Returns:
  *      - size_t        : 0 is successfully created list 
  *                        1 if no list created 
 */
@@ -235,19 +235,20 @@ size_t make_list(struct mtll **all_lists, struct mtll *node_head, size_t size) {
             
             //check if insides are int 
             if (checkType(copy_input) == INT) {
+
                 //if list doesnt exist 
                 if (list_exists(all_lists, atoi(copy_input)) == 0) {
                     printInvalidCommand("NEW");
                     free(new_node);
                     return 1;
                 }
+
                 node_head->type = NESTED;
                 new_node->type = REF;
             }
 
             
         }
-        ///
 
         //set current node parameters
         new_node->next = NULL;
@@ -316,6 +317,9 @@ size_t make_list(struct mtll **all_lists, struct mtll *node_head, size_t size) {
  *      struct mtll ** : lists            
  *      size_t         : num_lists
  *      struct mtll *  : to_remove    //list to remove 
+ * Returns:
+ *      size_t         : 0 if successfully removed 
+ *                       1 if not successful
 */
 size_t mtll_remove(struct mtll **lists, struct mtll *to_remove) {
     if (to_remove == NULL || *lists == NULL || lists == NULL) { 
@@ -813,13 +817,12 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
     
     //base cases
     if (current == NULL) {
-        printf("\n");
         return;
     }
 
     //not a nested list (recurse 0 times)
     else if (node->type == LIST && recurse == 0) {
-        mtll_view(node);
+        nested_view(node);
         return;
     }
 
@@ -858,7 +861,7 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
 
     //no nested list 
     if (count == 0) {
-        mtll_view(node);
+        nested_view(node);
         return;
     }
     
@@ -919,7 +922,7 @@ void mtll_view_nested(struct mtll **lists, struct mtll *node, size_t recurse) {
 
     }
 
-    printf("\n");
+    // printf("\n");
     return;
 }
 
