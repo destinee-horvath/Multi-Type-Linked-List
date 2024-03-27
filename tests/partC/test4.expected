@@ -1,0 +1,11 @@
+INVALID COMMAND: NEW
+INVALID COMMAND: INPUT
+List 0: i -> need -> ideas
+Nested 1: some -> other -> {List 0} -> list
+Number of lists: 2
+List 0
+Nested 1
+Nested 2: another -> really -> weird -> list -> {List 1}
+another -> really -> weird -> list -> {some -> other -> {i -> need -> ideas} -> list}
+Nested 3: super -> nested -> {List 2} -> end
+super -> nested -> {another -> really -> weird -> list -> {some -> other -> {i -> need -> ideas} -> list}} -> end

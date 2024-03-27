@@ -1,0 +1,26 @@
+NEW 2
+fried
+rice
+NEW 3
+chicken
+noodle
+soup
+VIEW ALL
+INSERT 2 -1 lettuce
+INSERT 0 -2 {1}
+NEW 4
+partial
+derivatives
+{0}
+2.71
+VIEW-NESTED 2
+VIEW-NESTED 0
+VIEW ALL
+REMOVE 0
+REMOVE 1
+REMOVE 2
+VIEW 0
+VIEW 1
+REMOVE 0
+VIEW 1
+REMOVE 1

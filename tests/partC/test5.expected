@@ -1,0 +1,31 @@
+List 0: fried -> rice
+List 1: chicken -> noodle -> soup
+Number of lists: 2
+List 0
+List 1
+INVALID COMMAND: INSERT
+Nested 0: fried -> {List 1} -> rice
+Nested 2: partial -> derivatives -> {List 0} -> 2.71
+partial -> derivatives -> {fried -> {chicken -> noodle -> soup} -> rice} -> 2.71
+fried -> {chicken -> noodle -> soup} -> rice
+Number of lists: 3
+Nested 0
+List 1
+Nested 2
+INVALID COMMAND: REMOVE
+INVALID COMMAND: REMOVE
+List 2 has been removed.
+
+Number of lists: 2
+Nested 0
+List 1
+fried -> {List 1} -> rice
+chicken -> noodle -> soup
+List 0 has been removed.
+
+Number of lists: 1
+List 1
+chicken -> noodle -> soup
+List 1 has been removed.
+
+Number of lists: 0

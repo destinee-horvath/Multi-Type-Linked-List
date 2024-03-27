@@ -1,0 +1,11 @@
+List 0: tab ->   -> space ->   -> nothing -> 
+tab ->   -> space ->   -> nothing -> 
+INVALID COMMAND: VIEW
+INVALID COMMAND: VIEW-NESTED
+List 0 has been removed.
+
+Number of lists: 0
+INVALID COMMAND: VIEW
+List 1: a -> new -> list
+INVALID COMMAND: VIEW
+a -> new -> list
