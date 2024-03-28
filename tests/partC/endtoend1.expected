@@ -1,0 +1,28 @@
+List 0: it -> raining -> tacos
+List 1: cos -> i -> super -> shy
+INVALID COMMAND: INPUT
+List 2: money -> money
+Nested 3: nested -> {List 0} -> {List 1}
+it -> raining -> tacos
+INVALID COMMAND: INPUT
+nested -> {List 0} -> {List 1}
+string -> reference -> reference
+nested -> {it -> raining -> tacos} -> {cos -> i -> super -> shy}
+Number of lists: 4
+List 0
+List 1
+List 2
+Nested 3
+List 2 has been removed.
+
+Number of lists: 3
+List 0
+List 1
+Nested 3
+string -> char -> string -> string
+List 1: cos -> i -> super -> shy -> eeee
+List 4: me -> n -> my -> gorls
+List 4: me -> my -> gorls
+List 4: me -> and -> my -> gorls
+me -> and -> my -> gorls
+INVALID COMMAND: VIEW

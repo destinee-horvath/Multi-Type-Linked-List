@@ -1,0 +1,32 @@
+NEW 3
+01
+10
+00
+NEW 4
+bounce
+bounce bounce bounce bounce
+bounce bounce
+bounce bounce bounce
+INSERT 0 2 10
+NEW 5
+s
+a
+l
+t
+y
+TYPE 2
+a very invalid input
+clearly invalid again
+REMOVE 0
+INSERT 1 2 {2}
+VIEW-NESTED 1
+TYPE 1
+VIEW-NESTED 0 
+NEW 3
+discrete
+is
+hard
+REMOVE 3
+VIEW 3
+DELETE 1 3
+TYPE 1

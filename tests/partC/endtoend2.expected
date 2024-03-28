@@ -1,0 +1,25 @@
+List 0: 1 -> 10 -> 0
+List 1: bounce -> bounce bounce bounce bounce -> bounce bounce -> bounce bounce bounce
+List 0: 1 -> 10 -> 10 -> 0
+List 2: s -> a -> l -> t -> y
+char -> char -> char -> char -> char
+INVALID COMMAND: INPUT
+INVALID COMMAND: INPUT
+List 0 has been removed.
+
+Number of lists: 2
+List 1
+List 2
+Nested 1: bounce -> bounce bounce bounce bounce -> {List 2} -> bounce bounce -> bounce bounce bounce
+bounce -> bounce bounce bounce bounce -> {s -> a -> l -> t -> y} -> bounce bounce -> bounce bounce bounce
+string -> string -> reference -> string -> string
+INVALID COMMAND: VIEW-NESTED
+List 3: discrete -> is -> hard
+List 3 has been removed.
+
+Number of lists: 2
+Nested 1
+List 2
+INVALID COMMAND: VIEW
+Nested 1: bounce -> bounce bounce bounce bounce -> {List 2} -> bounce bounce bounce
+string -> string -> reference -> string
