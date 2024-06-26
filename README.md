@@ -2,7 +2,18 @@
 To create a linked lists that can store elements of multiple data types while preserving their actual data types. The program takes in commands from stdin to create and manage these multi-type linked lists. 
 
 # Commands
-### NEW
+- [NEW](#new)
+- [VIEW](#view)
+- [TYPE](#type)
+- [VIEW ALL](#view-all)
+- [VIEW-NESTED](#view-nested)
+- [REMOVE](#remove)
+- [INSERT](#insert)
+- [DELETE](#delete)
+- [Invalid Commands](#invalid-commands)
+
+
+## NEW
 To create a new list with a specific number of initial elements:
 
 `NEW <number of elements>`
@@ -37,7 +48,7 @@ Output:
 List 1: first -> {List 0} -> last
 ```
 
-### VIEW 
+## VIEW 
 To view a list by its index: 
 
 `VIEW <list index>`
@@ -54,7 +65,7 @@ Output:
 1 -> donuts -> c
 ```
 
-### TYPE
+## TYPE
 To view the data types of each element in a list of index: 
 
 `TYPE <list index>`
@@ -77,7 +88,7 @@ Output:
 int -> string -> char
 ```
 
-### VIEW ALL 
+## VIEW ALL 
 To view all the lists in order of creation: 
 
 `VIEW ALL`
@@ -95,7 +106,7 @@ List 0: 1 -> donuts -> c
 List 1: List 1: first -> {List 0} -> last
 ```
 
-### VIEW-NESTED
+## VIEW-NESTED
 To view the sublists of a nested list: 
 
 `VIEW-NESTED <list index>`
@@ -112,7 +123,7 @@ Output:
 first -> {1 -> donuts -> c} -> last
 ```
 
-### REMOVE
+## REMOVE
 To remove a list with index: 
 
 `REMOVE <list index>`
@@ -132,7 +143,7 @@ Number of Lists: 1
 List 0
 ```
 
-### INSERT
+## INSERT
 To insert an element into an existing list: 
 
 `INSERT <list id> <index> <value>`
@@ -149,7 +160,7 @@ Output:
 List 0: 1 -> 3.14 -> donuts -> c
 ```
 
-### DELETE 
+## DELETE 
 To delete an element of index from an existing list:
 
 `DELETE <list id> <index>`
@@ -178,7 +189,7 @@ Output:
 List 1: 1 -> 2 -> 3
 ```
 
-### Invalid Commands 
+## Invalid Commands 
 For any command that is invalid: 
 Output: `INVALID COMMAND: <command entered>`
 
